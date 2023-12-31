@@ -17,22 +17,33 @@ function Login() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const authCheck = () => {
+  const authCheck = (data) => {
     setTimeout(() => {
-      fetch("http://localhost:4000/api/login")
-        .then((response) => response.json())
-        .then((data) => {
-          alert("Successfully Login");
-          localStorage.setItem("user", JSON.stringify(data));
+      console.log('auth check method called');
+      // fetch("http://localhost:5001/api/auth/login")
+      //   .then((response) => response.json())
+      //   .then((data) => {
+      //     alert("Successfully Login");
+      //     localStorage.setItem("user", JSON.stringify(data));
+      //     authContext.signin(data._id, () => {
+      //       navigate("/");
+      //     });
+      //   })
+      //   .catch((err) => {
+      //     alert("Wrong credentials, Try again")
+      //     console.log(err);
+      //   });
+
+        localStorage.setItem("user", JSON.stringify(data));
           authContext.signin(data._id, () => {
             navigate("/");
-          });
-        })
-        .catch((err) => {
-          alert("Wrong credentials, Try again")
-          console.log(err);
         });
+
     }, 3000);
+
+
+
+
   };
 
   const loginUser = (e) => {
@@ -40,21 +51,26 @@ function Login() {
     if (form.email === "" || form.password === "") {
       alert("To login user, enter details to proceed...");
     } else {
-      fetch("http://localhost:4000/api/login", {
+      fetch("http://localhost:5001/api/auth/login", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
         },
         body: JSON.stringify(form),
       })
-        .then((result) => {
-          console.log("User login", result);
+        .then((response) => response.json())
+        .then(data => {
+          console.log('check data');
+          console.log(data);
+          if(data && data.token) {
+            authCheck(data.user);
+          }
         })
         .catch((error) => {
           console.log("Something went wrong ", error);
         });
     }
-    authCheck();
+    // authCheck();
   };
 
 

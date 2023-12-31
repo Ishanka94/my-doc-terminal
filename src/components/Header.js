@@ -8,6 +8,7 @@ const navigation = [
   { name: "Dashboard", href: "/", current: true },
   { name: "Inventory", href: "/inventory", current: false },
   { name: "Purchase Details", href: "/purchase-details", current: false },
+  { name: "Doctors Details", href: "/doctors-details", current: false },
   { name: "Sales", href: "/sales", current: false },
   { name: "Manage Store", href: "/manage-store", current: false },
 ];
@@ -35,10 +36,10 @@ export default function Header() {
                         <img
                           className="h-8 w-8"
                           src={require("../assets/logo.png")}
-                          alt="Inventory Management System"
+                          alt="Doctor Admin Terminal"
                         />
                         <span className="font-bold text-white italic">
-                          Inventory Management
+                          Doctor Admin Terminal
                         </span>
                       </div>
                     </div>
