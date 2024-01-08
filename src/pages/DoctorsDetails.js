@@ -8,13 +8,15 @@ function DoctorsDetails() {
   const [showDoctorModal, setDoctorModal] = useState(false);
   const [purchase, setAllPurchaseData] = useState([]);
   const [products, setAllProducts] = useState([]);
+  const [doctors, setAllDoctors] = useState([]);
   const [updatePage, setUpdatePage] = useState(true);
 
   const authContext = useContext(AuthContext);
 
   useEffect(() => {
-    fetchPurchaseData();
-    fetchProductsData();
+    fetchDoctorsList();
+    // fetchPurchaseData();
+    // fetchProductsData();
   }, [updatePage]);
 
   // Fetching Data of All Purchase items
@@ -26,6 +28,17 @@ function DoctorsDetails() {
       })
       .catch((err) => console.log(err));
   };
+
+  const fetchDoctorsList = () => {
+    fetch("http://localhost:5001/api/auth/get-all-users")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('doc list');
+        console.log(data.data);
+        setAllDoctors(data.data);
+      })
+      .catch((err) => console.log(err));
+  }
 
   // Fetching Data of All Products
   const fetchProductsData = () => {
@@ -42,7 +55,7 @@ function DoctorsDetails() {
     setDoctorModal(!showDoctorModal);
   };
 
-  
+
   // Handle Page Update
   const handlePageUpdate = () => {
     setUpdatePage(!updatePage);
@@ -56,7 +69,7 @@ function DoctorsDetails() {
             addSaleModalSetting={addSaleModalSetting}
             products={products}
             handlePageUpdate={handlePageUpdate}
-            authContext = {authContext}
+            authContext={authContext}
           />
         )}
         {/* Table  */}
@@ -85,32 +98,35 @@ function DoctorsDetails() {
                   Doctor Name
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
-                  Status
+                  Email
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
-                  Doctor Category
+                  NIC
                 </th>
               </tr>
             </thead>
 
             <tbody className="divide-y divide-gray-200">
-              {purchase.map((element, index) => {
+              {doctors.map((element, index) => {
                 return (
                   <tr key={element._id}>
                     <td className="whitespace-nowrap px-4 py-2  text-gray-900">
-                      {element.ProductID?.name}
+                      {element.doctorId}
                     </td>
                     <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                      {element.QuantityPurchased}
+                      {element.doctorName}
                     </td>
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                    {/* <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                       {new Date(element.PurchaseDate).toLocaleDateString() ==
                       new Date().toLocaleDateString()
                         ? "Today"
                         : element.PurchaseDate}
+                    </td> */}
+                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                      {element.email}
                     </td>
                     <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                      ${element.TotalPurchaseAmount}
+                      {element.nic}
                     </td>
                   </tr>
                 );
