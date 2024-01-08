@@ -1,53 +1,70 @@
 import React, { useState, useEffect, useContext } from "react";
-import AddPurchaseDetails from "../components/AddPurchaseDetails";
 import AddDoctorDetails from "../components/AddDoctorDetails";
 import AuthContext from "../AuthContext";
+import ReactPaginate from "react-paginate";
 
 function DoctorsDetails() {
-  const [showPurchaseModal, setPurchaseModal] = useState(false);
   const [showDoctorModal, setDoctorModal] = useState(false);
-  const [purchase, setAllPurchaseData] = useState([]);
-  const [products, setAllProducts] = useState([]);
   const [doctors, setAllDoctors] = useState([]);
   const [updatePage, setUpdatePage] = useState(true);
+
+  const [items, setItems] = useState([]);
+  const [pageCount, setpageCount] = useState(0);
+  let limit = 10;
 
   const authContext = useContext(AuthContext);
 
   useEffect(() => {
-    fetchDoctorsList();
-    // fetchPurchaseData();
-    // fetchProductsData();
-  }, [updatePage]);
+    // fetchDoctorsList();
+    const getDoctors = async () => {
+      const res = await fetch(
+        `http://localhost:5001/api/auth/get-all-users?page=0&limit=${limit}`
+        // `https://jsonplaceholder.typicode.com/comments?_page=1&_limit=${limit}`
+      );
+      const data = await res.json();
+      const doctorsList = data?.data?.allUsers;
+      const total = data?.data?.total;
+      setpageCount(Math.ceil(total / limit));
+      // console.log(Math.ceil(total/12));
+      setAllDoctors(doctorsList);
+    };
 
-  // Fetching Data of All Purchase items
-  const fetchPurchaseData = () => {
-    fetch(`http://localhost:4000/api/purchase/get/${authContext.user}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setAllPurchaseData(data);
-      })
-      .catch((err) => console.log(err));
-  };
+    getDoctors();
+  }, [limit]);
 
   const fetchDoctorsList = () => {
-    fetch("http://localhost:5001/api/auth/get-all-users")
+    fetch(`http://localhost:5001/api/auth/get-all-users?page=1&limit=${limit}`)
       .then((response) => response.json())
       .then((data) => {
         console.log('doc list');
         console.log(data.data);
         setAllDoctors(data.data);
+        setpageCount(5);
       })
       .catch((err) => console.log(err));
   }
 
-  // Fetching Data of All Products
-  const fetchProductsData = () => {
-    fetch(`http://localhost:4000/api/product/get/${authContext.user}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setAllProducts(data);
-      })
-      .catch((err) => console.log(err));
+
+  const handlePageClick = async (data) => {
+    console.log(data.selected);
+    let currentPage = data.selected;
+    const doctorsFromServer = await fetchDoctors(currentPage);
+
+    setAllDoctors(doctorsFromServer);
+
+    // scroll to the top
+    //window.scrollTo(0, 0)
+  };
+
+  const fetchDoctors = async (currentPage) => {
+    const res = await fetch(
+      `http://localhost:5001/api/auth/get-all-users?page=${currentPage}&limit=${limit}`
+    );
+    const data = await res.json();
+    console.log('fetched list');
+    console.log(data);
+    const doctorsList = data?.data?.allUsers;
+    return doctorsList;
   };
 
   // Modal for Sale Add
@@ -67,7 +84,7 @@ function DoctorsDetails() {
         {showDoctorModal && (
           <AddDoctorDetails
             addSaleModalSetting={addSaleModalSetting}
-            products={products}
+            doctors={doctors}
             handlePageUpdate={handlePageUpdate}
             authContext={authContext}
           />
@@ -135,6 +152,25 @@ function DoctorsDetails() {
           </table>
         </div>
       </div>
+      <ReactPaginate 
+        previousLabel={"previous"}
+        nextLabel={"next"}
+        breakLabel={"..."}
+        pageCount={pageCount}
+        marginPagesDisplayed={2}
+        pageRangeDisplayed={3}
+        onPageChange={handlePageClick}
+        containerClassName={"pagination justify-content-center"}
+        pageClassName={"page-item"}
+        pageLinkClassName={"page-link"}
+        previousClassName={"page-item"}
+        previousLinkClassName={"page-link"}
+        nextClassName={"page-item"}
+        nextLinkClassName={"page-link"}
+        breakClassName={"page-item"}
+        breakLinkClassName={"page-link"}
+        activeClassName={"active"}
+      />
     </div>
   );
 }

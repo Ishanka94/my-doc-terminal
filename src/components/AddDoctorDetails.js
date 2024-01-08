@@ -5,7 +5,7 @@ import FileBase64 from 'react-file-base64';
 
 export default function AddDoctorDetails({
   addSaleModalSetting,
-  products,
+  doctors,
   handlePageUpdate,
   authContext
 }) {
