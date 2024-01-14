@@ -1,74 +1,46 @@
-import React, { useState, useEffect, useContext } from "react";
-import AddDoctorDetails from "../components/AddDoctorDetails";
-import EditDoctorDetails from "../components/EditDoctorDetails";
-import AuthContext from "../AuthContext";
-import ReactPaginate from "react-paginate";
+import React, { useState, useEffect, useContext } from 'react';
+import AddDoctorDetails from '../components/AddDoctorDetails';
+import EditDoctorDetails from '../components/EditDoctorDetails';
+import AuthContext from '../AuthContext';
+import ReactPaginate from 'react-paginate';
 import DoctorService from '../services/DoctorService';
 import FetchClient from "../services/FetchClient";
+import * as AppConstants from '../util/constants';
 
 function DoctorsDetails() {
   const [showDoctorModal, setDoctorModal] = useState(false);
   const [showDoctorEditModal, setDoctorEditModal] = useState(false);
   const [doctors, setAllDoctors] = useState([]);
   const [updatePage, setUpdatePage] = useState(true);
-
-  const [items, setItems] = useState([]);
   const [pageCount, setpageCount] = useState(0);
-  let limit = 10;
 
   const authContext = useContext(AuthContext);
+  const doctorService = new DoctorService(FetchClient);
 
   useEffect(() => {
-    const doctorService = new DoctorService(FetchClient);
-
-    const getDoctors = async () => {
-      try {
-        const endpoint = window.Configs.backendUrl + `auth/get-all-users?page=0&limit=${limit}`;
-        const res = await doctorService.getDoctors(endpoint);
-        const data = await res.json();
-        const doctorsList = data?.data?.allUsers;
-        const total = data?.data?.total;
-        setpageCount(Math.ceil(total / limit));
-        setAllDoctors(doctorsList);
-      } catch(error) {
-        console.log(error);
-      }
-    };
-
-    getDoctors();
-  }, [limit]);
-
-  const fetchDoctorsList = () => {
-    fetch(`http://localhost:5001/api/auth/get-all-users?page=1&limit=${limit}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setAllDoctors(data.data);
-        setpageCount(5);
-      })
-      .catch((err) => console.log(err));
-  }
+    fetchDoctors(0);
+  }, [AppConstants.TABLE_PAGE_SIZE]);
 
 
   const handlePageClick = async (data) => {
     let currentPage = data.selected;
-    const doctorsFromServer = await fetchDoctors(currentPage);
-
-    setAllDoctors(doctorsFromServer);
-
-    // scroll to the top
-    //window.scrollTo(0, 0)
+    fetchDoctors(currentPage);
   };
 
   const fetchDoctors = async (currentPage) => {
-    const res = await fetch(
-      `http://localhost:5001/api/auth/get-all-users?page=${currentPage}&limit=${limit}`
-    );
-    const data = await res.json();
-    const doctorsList = data?.data?.allUsers;
-    return doctorsList;
+    try {
+      const endpoint = window.Configs.backendUrl + `auth/get-all-users?page=${currentPage}&limit=${AppConstants.TABLE_PAGE_SIZE}`;
+      const res = await doctorService.getDoctors(endpoint);
+      const data = await res.json();
+      const doctorsList = data?.data?.allUsers;
+      const total = data?.data?.total;
+      setpageCount(Math.ceil(total / AppConstants.TABLE_PAGE_SIZE));
+      setAllDoctors(doctorsList);
+    } catch(error) {
+      console.log(error);
+    }
   };
 
-  // Modal for Sale Add
   const addSaleModalSetting = () => {
     setDoctorModal(!showDoctorModal);
   };
@@ -78,7 +50,6 @@ function DoctorsDetails() {
   };
 
 
-  // Handle Page Update
   const handlePageUpdate = () => {
     setUpdatePage(!updatePage);
   };
