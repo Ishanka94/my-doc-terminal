@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import AddDoctorDetails from "../components/AddDoctorDetails";
+import EditDoctorDetails from "../components/EditDoctorDetails";
 import AuthContext from "../AuthContext";
 import ReactPaginate from "react-paginate";
 
 function DoctorsDetails() {
   const [showDoctorModal, setDoctorModal] = useState(false);
+  const [showDoctorEditModal, setDoctorEditModal] = useState(false);
   const [doctors, setAllDoctors] = useState([]);
   const [updatePage, setUpdatePage] = useState(true);
 
@@ -25,7 +27,6 @@ function DoctorsDetails() {
       const doctorsList = data?.data?.allUsers;
       const total = data?.data?.total;
       setpageCount(Math.ceil(total / limit));
-      // console.log(Math.ceil(total/12));
       setAllDoctors(doctorsList);
     };
 
@@ -36,8 +37,6 @@ function DoctorsDetails() {
     fetch(`http://localhost:5001/api/auth/get-all-users?page=1&limit=${limit}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log('doc list');
-        console.log(data.data);
         setAllDoctors(data.data);
         setpageCount(5);
       })
@@ -46,7 +45,6 @@ function DoctorsDetails() {
 
 
   const handlePageClick = async (data) => {
-    console.log(data.selected);
     let currentPage = data.selected;
     const doctorsFromServer = await fetchDoctors(currentPage);
 
@@ -61,8 +59,6 @@ function DoctorsDetails() {
       `http://localhost:5001/api/auth/get-all-users?page=${currentPage}&limit=${limit}`
     );
     const data = await res.json();
-    console.log('fetched list');
-    console.log(data);
     const doctorsList = data?.data?.allUsers;
     return doctorsList;
   };
@@ -70,6 +66,10 @@ function DoctorsDetails() {
   // Modal for Sale Add
   const addSaleModalSetting = () => {
     setDoctorModal(!showDoctorModal);
+  };
+
+  const addDocEditModalSetting = (doctor) => {
+    setDoctorEditModal(!showDoctorEditModal);
   };
 
 
@@ -84,6 +84,14 @@ function DoctorsDetails() {
         {showDoctorModal && (
           <AddDoctorDetails
             addSaleModalSetting={addSaleModalSetting}
+            doctors={doctors}
+            handlePageUpdate={handlePageUpdate}
+            authContext={authContext}
+          />
+        )}
+        {showDoctorEditModal && (
+          <EditDoctorDetails
+          addDocEditModalSetting={addDocEditModalSetting}
             doctors={doctors}
             handlePageUpdate={handlePageUpdate}
             authContext={authContext}
@@ -144,6 +152,11 @@ function DoctorsDetails() {
                     </td>
                     <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                       {element.nic}
+                    </td>
+                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                      <button onClick={() => addDocEditModalSetting(element)}>
+                        Edit
+                      </button>
                     </td>
                   </tr>
                 );

@@ -1,10 +1,10 @@
-import { Fragment, useRef, useState, useEffect } from "react";
+import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import FileBase64 from 'react-file-base64';
 
-export default function AddDoctorDetails({
-  addSaleModalSetting,
+export default function EditDoctorDetails({
+  addDocEditModalSetting,
   doctors,
   handlePageUpdate,
   authContext
@@ -35,7 +35,7 @@ export default function AddDoctorDetails({
   };
 
   const closeModal = () => {
-    addSaleModalSetting();
+    addDocEditModalSetting();
   }
 
   // POST Data
@@ -50,7 +50,7 @@ export default function AddDoctorDetails({
       .then((result) => {
         alert("Doctor details added");
         handlePageUpdate();
-        addSaleModalSetting();
+        addDocEditModalSetting();
       })
       .catch((err) => console.log(err));
   };
@@ -107,7 +107,7 @@ export default function AddDoctorDetails({
                         as="h3"
                         className="text-lg  py-4 font-semibold leading-6 text-gray-900 "
                       >
-                         Doctors Details
+                         Edit doctor status
                       </Dialog.Title>
                       <form action="#">
                         <div className="grid gap-4 mb-4 sm:grid-cols-2">
@@ -301,7 +301,7 @@ export default function AddDoctorDetails({
                   <button
                     type="button"
                     className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                    onClick={() => addSaleModalSetting()}
+                    onClick={() => addDocEditModalSetting()}
                     ref={cancelButtonRef}
                   >
                     Cancel
