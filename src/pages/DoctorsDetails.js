@@ -3,6 +3,8 @@ import AddDoctorDetails from "../components/AddDoctorDetails";
 import EditDoctorDetails from "../components/EditDoctorDetails";
 import AuthContext from "../AuthContext";
 import ReactPaginate from "react-paginate";
+import DoctorService from '../services/DoctorService';
+import FetchClient from "../services/FetchClient";
 
 function DoctorsDetails() {
   const [showDoctorModal, setDoctorModal] = useState(false);
@@ -17,17 +19,20 @@ function DoctorsDetails() {
   const authContext = useContext(AuthContext);
 
   useEffect(() => {
-    // fetchDoctorsList();
+    const doctorService = new DoctorService(FetchClient);
+
     const getDoctors = async () => {
-      const res = await fetch(
-        `http://localhost:5001/api/auth/get-all-users?page=0&limit=${limit}`
-        // `https://jsonplaceholder.typicode.com/comments?_page=1&_limit=${limit}`
-      );
-      const data = await res.json();
-      const doctorsList = data?.data?.allUsers;
-      const total = data?.data?.total;
-      setpageCount(Math.ceil(total / limit));
-      setAllDoctors(doctorsList);
+      try {
+        const endpoint = window.Configs.backendUrl + `auth/get-all-users?page=0&limit=${limit}`;
+        const res = await doctorService.getDoctors(endpoint);
+        const data = await res.json();
+        const doctorsList = data?.data?.allUsers;
+        const total = data?.data?.total;
+        setpageCount(Math.ceil(total / limit));
+        setAllDoctors(doctorsList);
+      } catch(error) {
+        console.log(error);
+      }
     };
 
     getDoctors();
