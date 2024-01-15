@@ -4,8 +4,9 @@ import EditDoctorDetails from '../components/EditDoctorDetails';
 import AuthContext from '../AuthContext';
 import ReactPaginate from 'react-paginate';
 import DoctorService from '../services/DoctorService';
-import FetchClient from "../services/FetchClient";
+import FetchClient from '../services/FetchClient';
 import * as AppConstants from '../util/constants';
+import ConsoleLogger from '../util/Logger';
 
 function DoctorsDetails() {
   const [showDoctorModal, setDoctorModal] = useState(false);
@@ -16,6 +17,8 @@ function DoctorsDetails() {
 
   const authContext = useContext(AuthContext);
   const doctorService = new DoctorService(FetchClient);
+
+  const logger = new ConsoleLogger(window.Configs.logLevel);
 
   useEffect(() => {
     fetchDoctors(0);
@@ -29,6 +32,7 @@ function DoctorsDetails() {
 
   const fetchDoctors = async (currentPage) => {
     try {
+      logger.log('Sending all user fetch request', 'DoctorsDetails.js');
       const endpoint = window.Configs.backendUrl + `auth/get-all-users?page=${currentPage}&limit=${AppConstants.TABLE_PAGE_SIZE}`;
       const res = await doctorService.getDoctors(endpoint);
       const data = await res.json();
@@ -37,7 +41,7 @@ function DoctorsDetails() {
       setpageCount(Math.ceil(total / AppConstants.TABLE_PAGE_SIZE));
       setAllDoctors(doctorsList);
     } catch(error) {
-      console.log(error);
+      logger.error(error);
     }
   };
 
