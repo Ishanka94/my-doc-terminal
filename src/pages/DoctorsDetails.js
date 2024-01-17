@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
-import AddDoctorDetails from '../components/AddDoctorDetails';
-import EditDoctorDetails from '../components/EditDoctorDetails';
+import AddDoctorDetails from '../components/doctor-management/AddDoctorDetails';
+import EditDoctorDetails from '../components/doctor-management/EditDoctorDetails';
 import AuthContext from '../AuthContext';
 import ReactPaginate from 'react-paginate';
 import DoctorService from '../services/DoctorService';

@@ -1,10 +1,10 @@
 import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition, Listbox } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
-import * as DoctorStatus from '../util/constants/DoctorStatus';
-import DoctorService from '../services/DoctorService';
-import FetchClient from '../services/FetchClient';
-import ConsoleLogger from '../util/Logger';
+import * as DoctorStatus from '../../util/constants/DoctorStatus';
+import DoctorService from '../../services/DoctorService';
+import FetchClient from '../../services/FetchClient';
+import ConsoleLogger from '../../util/Logger';
 
 const docStatus = [
   { name: 'Active', key: DoctorStatus.ACTIVE  },
@@ -54,7 +54,7 @@ export default function EditDoctorDetails({
   }
 
   // POST Data
-  const registerDoctor = async () => {
+  const updateDoctor = async () => {
     doctor.status = selected.key;
     const endpoint = window.Configs.backendUrl + `auth/update`;
     try {
@@ -169,7 +169,7 @@ export default function EditDoctorDetails({
                   <button
                     type="button"
                     className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
-                    onClick={registerDoctor}
+                    onClick={updateDoctor}
                   >
                     Update
                   </button>
