@@ -7,6 +7,8 @@ import DoctorService from '../services/DoctorService';
 import FetchClient from '../services/FetchClient';
 import * as AppConstants from '../util/constants';
 import ConsoleLogger from '../util/Logger';
+import { PencilIcon } from '@heroicons/react/20/solid';
+
 
 function DoctorsDetails() {
   const [showDoctorModal, setDoctorModal] = useState(false);
@@ -138,7 +140,7 @@ function DoctorsDetails() {
                     </td>
                     <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                       <button onClick={() => addDocEditModalSetting(element)}>
-                        Edit
+                        <PencilIcon className="h-5 w-5" aria-hidden="true" />
                       </button>
                     </td>
                   </tr>

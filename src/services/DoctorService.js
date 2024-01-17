@@ -13,6 +13,15 @@ class DoctorService {
         }
     }
 
+    async createOrUpdateDoctor(url, body) {
+        try {
+            return await this.httpClient.post(url, body)
+        } catch(error) {
+            // console.error(error);
+            throw error;
+        }
+    }
+
 }
 
 export default DoctorService;
