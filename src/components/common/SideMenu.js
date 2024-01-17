@@ -14,7 +14,7 @@ function SideMenu() {
           >
             <img
               alt="dashboard-icon"
-              src={require("../assets/dashboard-icon.png")}
+              src={require("../../assets/dashboard-icon.png")}
             />
             <span className="text-sm font-medium"> Dashboard </span>
           </Link>
@@ -49,7 +49,7 @@ function SideMenu() {
           >
             <img
               alt="purchase-icon"
-              src={require("../assets/supplier-icon.png")}
+              src={require("../../assets/supplier-icon.png")}
             />
             <span className="text-sm font-medium"> Doctor Details</span>
           </Link>
@@ -81,7 +81,7 @@ function SideMenu() {
         <div className="flex items-center gap-2 bg-white p-4 hover:bg-gray-50">
           <img
             alt="Profile"
-            src={require("../assets/profile-pic.jpg")}
+            src={require("../../assets/profile-pic.jpg")}
             className="h-10 w-10 rounded-full object-cover"
           />
 

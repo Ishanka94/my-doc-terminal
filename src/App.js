@@ -4,7 +4,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import "./index.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Layout from "./components/Layout";
+import Layout from "./components/common/Layout";
 import Inventory from "./pages/Inventory";
 import NoPageFound from "./pages/NoPageFound";
 import AuthContext from "./AuthContext";
@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 import Store from "./pages/Store";
 import Sales from "./pages/Sales";
 import PurchaseDetails from "./pages/PurchaseDetails";
-import DoctorsDetails from "./pages/DoctorsDetails";
+import DoctorsDetails from "./components/doctor-management/DoctorsDetails";
 
 
 const App = () => {

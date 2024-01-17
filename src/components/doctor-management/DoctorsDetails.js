@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
-import AddDoctorDetails from '../components/doctor-management/AddDoctorDetails';
-import EditDoctorDetails from '../components/doctor-management/EditDoctorDetails';
-import AuthContext from '../AuthContext';
+import AddDoctorDetails from './AddDoctorDetails';
+import EditDoctorDetails from './EditDoctorDetails';
+import AuthContext from '../../AuthContext';
 import ReactPaginate from 'react-paginate';
-import DoctorService from '../services/DoctorService';
-import FetchClient from '../services/FetchClient';
-import * as AppConstants from '../util/constants';
-import ConsoleLogger from '../util/Logger';
+import DoctorService from '../../services/DoctorService';
+import FetchClient from '../../services/FetchClient';
+import * as AppConstants from '../../util/constants';
+import ConsoleLogger from '../../util/Logger';
 import { PencilIcon } from '@heroicons/react/20/solid';
 
 

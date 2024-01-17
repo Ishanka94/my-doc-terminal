@@ -1,7 +1,7 @@
 import { Fragment, useContext } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import AuthContext from "../AuthContext";
+import AuthContext from "../../AuthContext";
 import { Link } from "react-router-dom";
 
 const navigation = [
@@ -35,7 +35,7 @@ export default function Header() {
                       <div className="flex justify-center items-center gap-2">
                         <img
                           className="h-8 w-8"
-                          src={require("../assets/logo.png")}
+                          src={require("../../assets/logo.png")}
                           alt="Doctor Admin Terminal"
                         />
                         <span className="font-bold text-white italic">
@@ -61,7 +61,7 @@ export default function Header() {
                             <span className="sr-only">Open user menu</span>
                             <img
                               className="h-8 w-8 rounded-full"
-                              src={require("../assets/profile-pic.jpg")}
+                              src={require("../../assets/profile-pic.jpg")}
                               alt="profile"
                             />
                           </Menu.Button>
@@ -144,7 +144,7 @@ export default function Header() {
                     <div className="flex-shrink-0">
                       <img
                         className="h-10 w-10 rounded-full"
-                        src={require("../assets/profile-pic.jpg")}
+                        src={require("../../assets/profile-pic.jpg")}
                         alt="profile"
                       />
                     </div>
