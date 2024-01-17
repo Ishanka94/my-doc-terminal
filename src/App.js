@@ -1,5 +1,5 @@
 import React from "react";
-import Login from "./pages/Login";
+import Login from "./components/auth/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import "./index.css";
@@ -7,7 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/common/Layout";
 import Inventory from "./pages/Inventory";
 import NoPageFound from "./pages/NoPageFound";
-import AuthContext from "./AuthContext";
+import AuthContext from "./contexts/AuthContext";
 import ProtectedWrapper from "./ProtectedWrapper";
 import { useEffect, useState } from "react";
 import Store from "./pages/Store";

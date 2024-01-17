@@ -1,7 +1,7 @@
 // import { LockClosedIcon } from "@heroicons/react/20/solid";
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import AuthContext from "../AuthContext";
+import AuthContext from "../../contexts/AuthContext";
 
 function Login() {
   const [form, setForm] = useState({
@@ -83,13 +83,13 @@ function Login() {
     <>
       <div className="grid grid-cols-1 sm:grid-cols-2 h-screen  items-center place-items-center">
         <div className="flex justify-center">
-          <img src={require("../assets/signup.jpg")} alt="" />
+          <img src={require("../../assets/signup.jpg")} alt="" />
         </div>
         <div className="w-full max-w-md space-y-8 p-10 rounded-lg">
           <div>
             <img
               className="mx-auto h-12 w-auto"
-              src={require("../assets/logo.png")}
+              src={require("../../assets/logo.png")}
               alt="Your Company"
             />
             <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">

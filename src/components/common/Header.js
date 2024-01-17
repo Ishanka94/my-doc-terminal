@@ -1,7 +1,7 @@
 import { Fragment, useContext } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import AuthContext from "../../AuthContext";
+import AuthContext from "../../contexts/AuthContext";
 import { Link } from "react-router-dom";
 
 const navigation = [

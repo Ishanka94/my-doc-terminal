@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import AddStore from "../components/AddStore";
-import AuthContext from "../AuthContext";
+import AuthContext from "../contexts/AuthContext";
 
 function Store() {
   const [showModal, setShowModal] = useState(false);

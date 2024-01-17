@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import AddDoctorDetails from './AddDoctorDetails';
 import EditDoctorDetails from './EditDoctorDetails';
-import AuthContext from '../../AuthContext';
+import AuthContext from '../../contexts/AuthContext';
 import ReactPaginate from 'react-paginate';
 import DoctorService from '../../services/DoctorService';
 import FetchClient from '../../services/FetchClient';
