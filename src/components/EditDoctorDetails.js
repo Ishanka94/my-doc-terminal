@@ -1,11 +1,35 @@
 import { Fragment, useRef, useState } from "react";
-import { Dialog, Transition } from "@headlessui/react";
+import { Dialog, Transition, Listbox, Menu } from "@headlessui/react";
 import { PlusIcon } from "@heroicons/react/24/outline";
-import FileBase64 from 'react-file-base64';
+import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
+import * as DoctorStatus from '../util/constants/DoctorStatus';
+
+function classNames(...classes) {
+  return classes.filter(Boolean).join(" ");
+}
+
+const docStatus = [
+  { name: 'Active' },
+  { name: 'Inactive' },
+  { name: 'Pending' }
+]
+
+const getCurrentStatus = (selectedDoc) => {
+  switch(selectedDoc?.status) {
+    case DoctorStatus.ACTIVE:
+      return docStatus[0];
+    case DoctorStatus.INACTIVE:
+      return docStatus[1];
+    case DoctorStatus.PENDING_APPROVAL:
+      return docStatus[2];
+    default:
+      return docStatus[0];
+  }
+}
 
 export default function EditDoctorDetails({
   addDocEditModalSetting,
-  doctors,
+  selectedDoctor,
   handlePageUpdate,
   authContext
 }) {
@@ -28,6 +52,15 @@ export default function EditDoctorDetails({
   });
   const [open, setOpen] = useState(true);
   const cancelButtonRef = useRef(null);
+  let selectedStatus = getCurrentStatus(selectedDoctor);
+  const [selected, setSelected] = useState(selectedStatus ? selectedStatus : docStatus[0]);
+  // if (selectedDoctor.status === 'PENDING_APPROVAL') {
+  //   selectedStatus = docStatus[2];
+  // }
+
+  // const [selected, setSelected] = useState(selectedStatus ? selectedStatus : docStatus[0]);
+
+ 
 
   // Handling Input Change for input fields
   const handleInputChange = (key, value) => {
@@ -36,6 +69,10 @@ export default function EditDoctorDetails({
 
   const closeModal = () => {
     addDocEditModalSetting();
+  }
+
+  const testMethod = () => {
+    console.log('button clicked bro');
   }
 
   // POST Data
@@ -109,184 +146,56 @@ export default function EditDoctorDetails({
                       >
                          Edit doctor status
                       </Dialog.Title>
-                      <form action="#">
-                        <div className="grid gap-4 mb-4 sm:grid-cols-2">
-                          <div>
-                            <label
-                              htmlFor="doctorId"
-                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                            >
-                              Doctor ID
-                            </label>
-                            {/* <input
-                              type="text"
-                              name="name"
-                              id="doctorId"
-                              value={doctor.doctorId}
-                              onChange={(e) =>
-                                handleInputChange(e.target.name, e.target.value)
-                              }
-                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                              placeholder="Ex. D_123&ldquo;"
-                            /> */}
-                            <input
-                              type="text"
-                              name="doctorId"
-                              id="doctorId"
-                              value={doctor.doctorId}
-                              onChange={(e) =>
-                                handleInputChange(e.target.name, e.target.value)
-                              }
-                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                              placeholder="D_123"
-                            />
-                            {/* <select
-                              id="doctorID"
-                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                              name="doctorID"
-                              onChange={(e) =>
-                                handleInputChange(e.target.name, e.target.value)
-                              }
-                            >
-                              <option selected="">Select Products</option>
-                              {products.map((element, index) => {
-                                return (
-                                  <option key={element._id} value={element._id}>
-                                    {element.name}
-                                  </option>
-                                );
-                              })}
-                            </select> */}
-                          </div>
-                          <div>
-                            <label
-                              htmlFor="doctorName"
-                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                            >
-                              Doctor name
-                            </label>
-                            <input
-                              type="text"
-                              name="doctorName"
-                              id="doctorName"
-                              value={doctor.doctorName}
-                              onChange={(e) =>
-                                handleInputChange(e.target.name, e.target.value)
-                              }
-                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                              placeholder="John"
-                            />
-                          </div>
-                          <div>
-                            <label
-                              htmlFor="status"
-                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                            >
-                              email
-                            </label>
-                            <input
-                              type="text"
-                              name="email"
-                              id="email"
-                              value={doctor.email}
-                              onChange={(e) =>
-                                handleInputChange(e.target.name, e.target.value)
-                              }
-                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                              placeholder="abc@gmail.com"
-                            />
-                          </div>
-                          <div className="h-fit w-fit">
-                            {/* <Datepicker
-                              onChange={handleChange}
-                              show={show}
-                              setShow={handleClose}
-                            /> */}
-                            <label
-                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                              htmlFor="purchaseDate"
-                            >
-                              NIC
-                            </label>
-                            <input
-                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                              type="text"
-                              id="nic"
-                              name="nic"
-                              value={doctor.nic}
-                              onChange={(e) =>
-                                handleInputChange(e.target.name, e.target.value)
-                              }
-                            />
-                          </div>
-                          <div>
-                            <label
-                              htmlFor="contact"
-                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                            >
-                              Contact no.
-                            </label>
-                            <input
-                              type="text"
-                              name="contact"
-                              id="contact"
-                              value={doctor.contact}
-                              onChange={(e) =>
-                                handleInputChange(e.target.name, e.target.value)
-                              }
-                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                              placeholder="0777123456"
-                            />
-                          </div>
-                          <div>
-                            <label
-                              htmlFor="attachment"
-                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                            >
-                              Attachment
-                            </label>
-                            {/* <input
-                              type="file"
-                              name="attachment"
-                              id="attachment"
-                              value={doctor.attachment}
-                              onChange={(e) =>
-                                handleInputChange(e.target.name, e.target.value)
-                              }
-                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                            /> */}
-                            <FileBase64
-                                multiple={ true }
-                                onDone={ (e) => getFiles(e) } />
-                          </div>
-                        </div>
-                        <div className="flex items-center space-x-4">
-                          {/* <button
-                            type="submit"
-                            className="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                      <Listbox value={selected} onChange={setSelected}>
+                        <div className="relative mt-1">
+                          <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                            <span className="block truncate">{selected.name}</span>
+                            <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                              <ChevronUpDownIcon
+                                className="h-5 w-5 text-gray-400"
+                                aria-hidden="true"
+                              />
+                            </span>
+                          </Listbox.Button>
+                          <Transition
+                            as={Fragment}
+                            leave="transition ease-in duration-100"
+                            leaveFrom="opacity-100"
+                            leaveTo="opacity-0"
                           >
-                            Update product
-                          </button> */}
-                          {/* <button
-                            type="button"
-                            className="text-red-600 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
-                          >
-                            <svg
-                              className="mr-1 -ml-1 w-5 h-5"
-                              fill="currentColor"
-                              viewBox="0 0 20 20"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                fill-rule="evenodd"
-                                d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                                clip-rule="evenodd"
-                              ></path>
-                            </svg>
-                            Delete
-                          </button> */}
+                            <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
+                              {docStatus.map((status, statusIdx) => (
+                                <Listbox.Option
+                                  key={statusIdx}
+                                  className={({ active }) =>
+                                    `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                                      active ? 'bg-amber-100 text-amber-900' : 'text-gray-900'
+                                    }`
+                                  }
+                                  value={status}
+                                >
+                                  {({ selected }) => (
+                                    <>
+                                      <span
+                                        className={`block truncate ${
+                                          selected ? 'font-medium' : 'font-normal'
+                                        }`}
+                                      >
+                                        {status.name}
+                                      </span>
+                                      {selected ? (
+                                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
+                                          <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                                        </span>
+                                      ) : null}
+                                    </>
+                                  )}
+                                </Listbox.Option>
+                              ))}
+                            </Listbox.Options>
+                          </Transition>
                         </div>
-                      </form>
+                      </Listbox>
                     </div>
                   </div>
                 </div>

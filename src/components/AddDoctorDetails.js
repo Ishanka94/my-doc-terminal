@@ -107,7 +107,7 @@ export default function AddDoctorDetails({
                         as="h3"
                         className="text-lg  py-4 font-semibold leading-6 text-gray-900 "
                       >
-                         Doctors Details
+                         Doctor Details
                       </Dialog.Title>
                       <form action="#">
                         <div className="grid gap-4 mb-4 sm:grid-cols-2">

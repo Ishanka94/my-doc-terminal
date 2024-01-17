@@ -14,6 +14,7 @@ function DoctorsDetails() {
   const [doctors, setAllDoctors] = useState([]);
   const [updatePage, setUpdatePage] = useState(true);
   const [pageCount, setpageCount] = useState(0);
+  const [doctor, setDoctor] = useState({});
 
   const authContext = useContext(AuthContext);
   const doctorService = new DoctorService(FetchClient);
@@ -50,7 +51,9 @@ function DoctorsDetails() {
   };
 
   const addDocEditModalSetting = (doctor) => {
+    setDoctor(doctor);
     setDoctorEditModal(!showDoctorEditModal);
+
   };
 
 
@@ -72,7 +75,7 @@ function DoctorsDetails() {
         {showDoctorEditModal && (
           <EditDoctorDetails
           addDocEditModalSetting={addDocEditModalSetting}
-            doctors={doctors}
+            selectedDoctor={doctor}
             handlePageUpdate={handlePageUpdate}
             authContext={authContext}
           />
@@ -81,7 +84,7 @@ function DoctorsDetails() {
         <div className="overflow-x-auto rounded-lg border bg-white border-gray-200 ">
           <div className="flex justify-between pt-5 pb-3 px-3">
             <div className="flex gap-4 justify-center items-center ">
-              <span className="font-bold">Doctors Details</span>
+              <span className="font-bold">Doctor Details</span>
             </div>
             <div className="flex gap-4">
               <button
