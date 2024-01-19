@@ -13,7 +13,7 @@ class DoctorService {
         }
     }
 
-    async createOrUpdateDoctor(url, body) {
+    async sendPostRequest(url, body) {
         try {
             return await this.httpClient.post(url, body)
         } catch(error) {

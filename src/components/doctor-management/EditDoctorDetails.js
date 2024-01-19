@@ -56,9 +56,9 @@ export default function EditDoctorDetails({
   // POST Data
   const updateDoctor = async () => {
     doctor.status = selected.key;
-    const endpoint = window.Configs.backendUrl + `auth/update`;
+    const endpoint = window.Configs.backendUrl + 'auth/update';
     try {
-      const res = await doctorService.createOrUpdateDoctor(endpoint, doctor);
+      const res = await doctorService.sendPostRequest(endpoint, doctor);
       const data = await res.json();
       if (data) {
         alert("Doctor status updated");

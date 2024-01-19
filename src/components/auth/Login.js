@@ -2,6 +2,9 @@
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthContext from "../../contexts/AuthContext";
+import DoctorService from '../../services/DoctorService';
+import FetchClient from '../../services/FetchClient';
+import ConsoleLogger from '../../util/Logger';
 
 function Login() {
   const [form, setForm] = useState({
@@ -11,7 +14,8 @@ function Login() {
 
   const authContext = useContext(AuthContext);
   const navigate = useNavigate();
-
+  const doctorService = new DoctorService(FetchClient);
+  const logger = new ConsoleLogger(window.Configs.logLevel);
 
   const handleInputChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -19,58 +23,29 @@ function Login() {
 
   const authCheck = (data) => {
     setTimeout(() => {
-      console.log('auth check method called');
-      // fetch("http://localhost:5001/api/auth/login")
-      //   .then((response) => response.json())
-      //   .then((data) => {
-      //     alert("Successfully Login");
-      //     localStorage.setItem("user", JSON.stringify(data));
-      //     authContext.signin(data._id, () => {
-      //       navigate("/");
-      //     });
-      //   })
-      //   .catch((err) => {
-      //     alert("Wrong credentials, Try again")
-      //     console.log(err);
-      //   });
-
         localStorage.setItem("user", JSON.stringify(data));
           authContext.signin(data._id, () => {
             navigate("/");
         });
 
     }, 3000);
-
-
-
-
   };
 
-  const loginUser = (e) => {
-    // Cannot send empty data
+  const loginUser = async (e) => {
+    const endpoint = window.Configs.backendUrl + 'auth/login';
     if (form.email === "" || form.password === "") {
       alert("To login user, enter details to proceed...");
     } else {
-      fetch("http://localhost:5001/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify(form),
-      })
-        .then((response) => response.json())
-        .then(data => {
-          console.log('check data');
-          console.log(data);
-          if(data && data.token) {
-            authCheck(data.user);
-          }
-        })
-        .catch((error) => {
-          console.log("Something went wrong ", error);
-        });
+      try {
+        const res = await doctorService.sendPostRequest(endpoint, form);
+        const data = await res.json();
+        if (data && data.token) {
+          authCheck(data.user);
+        }
+      } catch(error) {
+        logger.error(error);
+      }
     }
-    // authCheck();
   };
 
 
