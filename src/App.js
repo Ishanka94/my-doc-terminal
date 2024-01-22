@@ -8,7 +8,7 @@ import Layout from "./components/common/Layout";
 import Inventory from "./pages/Inventory";
 import NoPageFound from "./pages/NoPageFound";
 import AuthContext from "./contexts/AuthContext";
-import ProtectedWrapper from "./ProtectedWrapper";
+import ProtectedWrapper from "./route-guards/ProtectedWrapper";
 import { useEffect, useState } from "react";
 import Store from "./pages/Store";
 import Sales from "./pages/Sales";
@@ -20,13 +20,11 @@ const App = () => {
   const [user, setUser] = useState("");
   const [loader, setLoader] = useState(true);
   let myLoginUser = JSON.parse(localStorage.getItem("user"));
-  // console.log("USER: ",user)
 
   useEffect(() => {
     if (myLoginUser) {
       setUser(myLoginUser._id);
       setLoader(false);
-      // console.log("inside effect", myLoginUser)
     } else {
       setUser("");
       setLoader(false);
