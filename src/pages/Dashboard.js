@@ -157,15 +157,15 @@ function Dashboard() {
 
           <div>
             <strong className="block text-sm font-medium text-gray-500">
-              Sales
+              Widget 1
             </strong>
 
             <p>
               <span className="text-2xl font-medium text-gray-900">
-                ${saleAmount}
+                {saleAmount}
               </span>
 
-              <span className="text-xs text-gray-500"> from $240.94 </span>
+              <span className="text-xs text-gray-500"> 200 </span>
             </p>
           </div>
         </article>
@@ -192,16 +192,16 @@ function Dashboard() {
 
           <div>
             <strong className="block text-sm font-medium text-gray-500">
-              Purchase
+              Widget 2
             </strong>
 
             <p>
               <span className="text-2xl font-medium text-gray-900">
                 {" "}
-                ${purchaseAmount}{" "}
+                {purchaseAmount}{" "}
               </span>
 
-              <span className="text-xs text-gray-500"> from $404.32 </span>
+              <span className="text-xs text-gray-500"> from 404.32 </span>
             </p>
           </div>
         </article>
@@ -227,7 +227,7 @@ function Dashboard() {
 
           <div>
             <strong className="block text-sm font-medium text-gray-500">
-              Total Products
+              Widget 3
             </strong>
 
             <p>
@@ -262,7 +262,7 @@ function Dashboard() {
 
           <div>
             <strong className="block text-sm font-medium text-gray-500">
-              Total Stores
+              Widget 4
             </strong>
 
             <p>
