@@ -7,12 +7,15 @@ import DoctorService from '../../services/DoctorService';
 import FetchClient from '../../services/FetchClient';
 import * as AppConstants from '../../util/constants';
 import ConsoleLogger from '../../util/Logger';
-import { PencilIcon } from '@heroicons/react/20/solid';
+import { PencilIcon, Bars3Icon } from '@heroicons/react/20/solid';
+import DisplayDoctorInfo from './DisplayDoctorInfo';
 
 
 function DoctorsDetails() {
   const [showDoctorModal, setDoctorModal] = useState(false);
   const [showDoctorEditModal, setDoctorEditModal] = useState(false);
+  const [showDoctorInfoModal, setDoctorInfoModal] = useState(false);
+
   const [doctors, setAllDoctors] = useState([]);
   const [updatePage, setUpdatePage] = useState(true);
   const [pageCount, setpageCount] = useState(0);
@@ -58,6 +61,10 @@ function DoctorsDetails() {
 
   };
 
+  const addDocinfoModalSetting = (doctor) => {
+    setDoctor(doctor);
+    setDoctorInfoModal(!showDoctorInfoModal);
+  };
 
   const handlePageUpdate = () => {
     setUpdatePage(!updatePage);
@@ -77,6 +84,14 @@ function DoctorsDetails() {
         {showDoctorEditModal && (
           <EditDoctorDetails
           addDocEditModalSetting={addDocEditModalSetting}
+            selectedDoctor={doctor}
+            handlePageUpdate={handlePageUpdate}
+            authContext={authContext}
+          />
+        )}
+        {showDoctorInfoModal && (
+          <DisplayDoctorInfo
+          addDocinfoModalSetting={addDocinfoModalSetting}
             selectedDoctor={doctor}
             handlePageUpdate={handlePageUpdate}
             authContext={authContext}
@@ -141,6 +156,11 @@ function DoctorsDetails() {
                     <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                       <button onClick={() => addDocEditModalSetting(element)}>
                         <PencilIcon className="h-5 w-5" aria-hidden="true" />
+                      </button>
+                    </td>
+                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                      <button onClick={() => addDocinfoModalSetting(element)}>
+                        <Bars3Icon className="h-5 w-5" aria-hidden="true" />
                       </button>
                     </td>
                   </tr>
