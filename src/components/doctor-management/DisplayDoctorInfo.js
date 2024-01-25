@@ -1,28 +1,5 @@
-import { Fragment, useRef, useState } from "react";
-import { Dialog, Transition, Listbox } from "@headlessui/react";
-import * as DoctorStatus from '../../util/constants/DoctorStatus';
-import DoctorService from '../../services/DoctorService';
-import FetchClient from '../../services/FetchClient';
-import ConsoleLogger from '../../util/Logger';
-
-const docStatus = [
-  { name: 'Active', key: DoctorStatus.ACTIVE  },
-  { name: 'Inactive', key: DoctorStatus.INACTIVE },
-  { name: 'Pending', key: DoctorStatus.PENDING_APPROVAL }
-]
-
-const getCurrentStatus = (selectedDoc) => {
-  switch(selectedDoc?.status) {
-    case DoctorStatus.ACTIVE:
-      return docStatus[0];
-    case DoctorStatus.INACTIVE:
-      return docStatus[1];
-    case DoctorStatus.PENDING_APPROVAL:
-      return docStatus[2];
-    default:
-      return docStatus[0];
-  }
-}
+import { Fragment, useRef, useState } from 'react';
+import { Dialog, Transition } from '@headlessui/react';
 
 export default function DisplayDoctorInfo({
   addDocinfoModalSetting,
@@ -30,44 +7,12 @@ export default function DisplayDoctorInfo({
   handlePageUpdate,
   authContext
 }) {
-  const [doctor, setDoctor] = useState(selectedDoctor ? selectedDoctor : {
-    userID: authContext.user,
-    doctorId: "",
-    doctorName: "",
-    category: "",
-    nic: "",
-    attachment: "",
-    email: "",
-    contact: ""
-  });
   const [open, setOpen] = useState(true);
   const cancelButtonRef = useRef(null);
-  let selectedStatus = getCurrentStatus(selectedDoctor);
-  const [selected, setSelected] = useState(selectedStatus ? selectedStatus : docStatus[0]);
-
-  const doctorService = new DoctorService(FetchClient);
-  const logger = new ConsoleLogger(window.Configs.logLevel);
 
   const closeModal = () => {
     addDocinfoModalSetting();
   }
-
-  // POST Data
-  const updateDoctor = async () => {
-    doctor.status = selected.key;
-    const endpoint = window.Configs.backendUrl + 'auth/update';
-    try {
-      const res = await doctorService.sendPostRequest(endpoint, doctor);
-      const data = await res.json();
-      if (data) {
-        alert("Doctor status updated");
-        handlePageUpdate();
-        addDocinfoModalSetting();
-      }
-    } catch(err) {
-      logger.error(err);
-    }
-  };
 
   return (
     // Modal
@@ -201,21 +146,6 @@ export default function DisplayDoctorInfo({
                     </div>
                     
                   </div>
-
-
-
-
-
-
-
-            
-
-
-
-
-
-
-
 
                 </div>
                 <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
