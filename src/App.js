@@ -1,7 +1,7 @@
 import React from "react";
-import Login from "./components/auth/Login";
+import Login from "./pages/auth/Login";
 import Register from "./pages/Register";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/dashboard/Dashboard";
 import "./index.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/common/Layout";
@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 import Store from "./pages/Store";
 import Sales from "./pages/Sales";
 import PurchaseDetails from "./pages/PurchaseDetails";
-import DoctorsDetails from "./components/doctor-management/DoctorsDetails";
+import DoctorsDetails from "./pages/doctor-management/DoctorsDetails";
 
 
 const App = () => {
