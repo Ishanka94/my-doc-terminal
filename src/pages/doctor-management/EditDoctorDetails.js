@@ -5,6 +5,8 @@ import * as DoctorStatus from '../../util/constants/DoctorStatus';
 import DoctorService from '../../services/DoctorService';
 import FetchClient from '../../services/FetchClient';
 import ConsoleLogger from '../../util/Logger';
+import {useDispatch, useSelector} from "react-redux";
+import { updateDoctorStatus } from "../../actions/doctorActions";
 
 const docStatus = [
   { name: 'Active', key: DoctorStatus.ACTIVE  },
@@ -31,6 +33,11 @@ export default function EditDoctorDetails({
   handlePageUpdate,
   authContext
 }) {
+
+  const dispatch = useDispatch();
+  const currentDoctor = useSelector(state => state.doctor.doctor)
+  const doctorsList = useSelector(state => state.doctor.doctors)
+
   const [doctor, setDoctor] = useState(selectedDoctor ? selectedDoctor : {
     userID: authContext.user,
     doctorId: "",
@@ -50,20 +57,26 @@ export default function EditDoctorDetails({
   const logger = new ConsoleLogger(window.Configs.logLevel);
 
   const closeModal = () => {
-    addDocEditModalSetting();
+    console.log('on close called');
+    addDocEditModalSetting(currentDoctor);
   }
 
   // POST Data
   const updateDoctor = async () => {
-    doctor.status = selected.key;
+    // doctor.status = selected.key;
+    // doctor = { ...doctor, status: selected.key }
+    const docObj = { doctorId: currentDoctor.doctorId, status: selected.key };
     const endpoint = window.Configs.backendUrl + 'auth/update';
     try {
-      const res = await doctorService.sendPostRequest(endpoint, doctor);
+      const res = await doctorService.sendPostRequest(endpoint, docObj);
       const data = await res.json();
       if (data) {
+        console.log('doctor status updated - ' + selected.key)
+        dispatch(updateDoctorStatus(selected.key))
+        // doctorsList.
         alert("Doctor status updated");
         handlePageUpdate();
-        addDocEditModalSetting();
+        addDocEditModalSetting(currentDoctor);
       }
     } catch(err) {
       logger.error(err);
@@ -176,7 +189,7 @@ export default function EditDoctorDetails({
                   <button
                     type="button"
                     className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                    onClick={() => addDocEditModalSetting()}
+                    onClick={() => addDocEditModalSetting(currentDoctor)}
                     ref={cancelButtonRef}
                   >
                     Cancel

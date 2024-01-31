@@ -9,17 +9,26 @@ import * as AppConstants from '../../util/constants';
 import ConsoleLogger from '../../util/Logger';
 import { PencilIcon, Bars3Icon } from '@heroicons/react/20/solid';
 import DisplayDoctorInfo from './DisplayDoctorInfo';
-
+import {useDispatch, useSelector} from "react-redux";
+import { updateDoctors, showDocModel, setCurrentDoctor, showDocEditModel, showDocInfoModel } from "../../actions/doctorActions";
 
 function DoctorsDetails() {
-  const [showDoctorModal, setDoctorModal] = useState(false);
-  const [showDoctorEditModal, setDoctorEditModal] = useState(false);
-  const [showDoctorInfoModal, setDoctorInfoModal] = useState(false);
 
-  const [doctors, setAllDoctors] = useState([]);
+  const dispatch = useDispatch();
+  const showDoctorModal = useSelector(state => state.doctor.showDoctorModal)
+  const showDoctorEditModal = useSelector(state => state.doctor.showDoctorEditModal)
+  const showDoctorInfoModal = useSelector(state => state.doctor.showDoctorInfoModal)
+  const doctors = useSelector(state => state.doctor.doctors)
+  const doctor = useSelector(state => state.doctor.doctor)
+
+  // const [showDoctorModal, setDoctorModal] = useState(false);
+  // const [showDoctorEditModal, setDoctorEditModal] = useState(false);
+  // const [showDoctorInfoModal, setDoctorInfoModal] = useState(false);
+
+  // const [doctors, setAllDoctors] = useState([]);
   const [updatePage, setUpdatePage] = useState(true);
   const [pageCount, setpageCount] = useState(0);
-  const [doctor, setDoctor] = useState({});
+  // const [doctor, setDoctor] = useState({});
 
   const authContext = useContext(AuthContext);
   const doctorService = new DoctorService(FetchClient);
@@ -45,25 +54,33 @@ function DoctorsDetails() {
       const doctorsList = data?.data?.allUsers;
       const total = data?.data?.total;
       setpageCount(Math.ceil(total / AppConstants.TABLE_PAGE_SIZE));
-      setAllDoctors(doctorsList);
+      // setAllDoctors(doctorsList);
+      dispatch(updateDoctors(doctorsList))
     } catch(error) {
       logger.error(error);
     }
   };
 
   const addSaleModalSetting = () => {
-    setDoctorModal(!showDoctorModal);
+    // setDoctorModal(!showDoctorModal);
+    dispatch(showDocModel(!showDoctorModal))
   };
 
   const addDocEditModalSetting = (doctor) => {
-    setDoctor(doctor);
-    setDoctorEditModal(!showDoctorEditModal);
+    // setDoctor(doctor);
+    // setDoctorEditModal(!showDoctorEditModal);
+    dispatch(setCurrentDoctor(doctor));
+    dispatch(showDocEditModel(!showDoctorEditModal))
 
   };
 
   const addDocinfoModalSetting = (doctor) => {
-    setDoctor(doctor);
-    setDoctorInfoModal(!showDoctorInfoModal);
+    // setDoctor(doctor);
+    // setDoctorInfoModal(!showDoctorInfoModal);
+
+    dispatch(setCurrentDoctor(doctor));
+    dispatch(showDocInfoModel(!showDoctorInfoModal))
+
   };
 
   const handlePageUpdate = () => {
