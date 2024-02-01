@@ -1,9 +1,9 @@
 import { Fragment, useRef, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
+import {useSelector} from "react-redux";
 
 export default function DisplayDoctorInfo({
   addDocinfoModalSetting,
-  selectedDoctor,
   handlePageUpdate,
   authContext
 }) {
@@ -13,6 +13,8 @@ export default function DisplayDoctorInfo({
   const closeModal = () => {
     addDocinfoModalSetting();
   }
+
+  const currentDoctor = useSelector(state => state.doctor.doctor)
 
   return (
     // Modal
@@ -70,7 +72,7 @@ export default function DisplayDoctorInfo({
                               disabled="true"
                               name="doctorId"
                               id="doctorId"
-                              value={selectedDoctor.doctorId}
+                              value={currentDoctor.doctorId}
                               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                               placeholder="D_123"
                             />
@@ -87,7 +89,7 @@ export default function DisplayDoctorInfo({
                               disabled="true"
                               name="doctorName"
                               id="doctorName"
-                              value={selectedDoctor.doctorName}
+                              value={currentDoctor.doctorName}
                               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                               placeholder="John"
                             />
@@ -104,7 +106,7 @@ export default function DisplayDoctorInfo({
                               disabled="true"
                               name="email"
                               id="email"
-                              value={selectedDoctor.email}
+                              value={currentDoctor.email}
                               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                               placeholder="abc@gmail.com"
                             />
@@ -127,7 +129,7 @@ export default function DisplayDoctorInfo({
                               disabled="true"
                               id="nic"
                               name="nic"
-                              value={selectedDoctor.nic}
+                              value={currentDoctor.nic}
                             />
                           </div>
                           <div>
@@ -137,7 +139,7 @@ export default function DisplayDoctorInfo({
                             >
                               Attachment
                             </label>
-                            { selectedDoctor.attachment ? <img src={`${selectedDoctor.attachment}`} /> : null }
+                            { currentDoctor.attachment ? <img src={`${currentDoctor.attachment}`} /> : null }
                           </div>
                         </div>
                         <div className="flex items-center space-x-4">

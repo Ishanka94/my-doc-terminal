@@ -73,7 +73,6 @@ export default function EditDoctorDetails({
       if (data) {
         console.log('doctor status updated - ' + selected.key)
         dispatch(updateDoctorStatus(selected.key))
-        // doctorsList.
         alert("Doctor status updated");
         handlePageUpdate();
         addDocEditModalSetting(currentDoctor);

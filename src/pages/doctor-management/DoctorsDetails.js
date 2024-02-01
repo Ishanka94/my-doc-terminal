@@ -21,14 +21,8 @@ function DoctorsDetails() {
   const doctors = useSelector(state => state.doctor.doctors)
   const doctor = useSelector(state => state.doctor.doctor)
 
-  // const [showDoctorModal, setDoctorModal] = useState(false);
-  // const [showDoctorEditModal, setDoctorEditModal] = useState(false);
-  // const [showDoctorInfoModal, setDoctorInfoModal] = useState(false);
-
-  // const [doctors, setAllDoctors] = useState([]);
   const [updatePage, setUpdatePage] = useState(true);
   const [pageCount, setpageCount] = useState(0);
-  // const [doctor, setDoctor] = useState({});
 
   const authContext = useContext(AuthContext);
   const doctorService = new DoctorService(FetchClient);
@@ -62,7 +56,6 @@ function DoctorsDetails() {
   };
 
   const addSaleModalSetting = () => {
-    // setDoctorModal(!showDoctorModal);
     dispatch(showDocModel(!showDoctorModal))
   };
 
@@ -109,7 +102,6 @@ function DoctorsDetails() {
         {showDoctorInfoModal && (
           <DisplayDoctorInfo
           addDocinfoModalSetting={addDocinfoModalSetting}
-            selectedDoctor={doctor}
             handlePageUpdate={handlePageUpdate}
             authContext={authContext}
           />
