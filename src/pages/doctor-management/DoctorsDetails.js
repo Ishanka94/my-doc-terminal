@@ -48,7 +48,6 @@ function DoctorsDetails() {
       const doctorsList = data?.data?.allUsers;
       const total = data?.data?.total;
       setpageCount(Math.ceil(total / AppConstants.TABLE_PAGE_SIZE));
-      // setAllDoctors(doctorsList);
       dispatch(updateDoctors(doctorsList))
     } catch(error) {
       logger.error(error);
@@ -60,20 +59,14 @@ function DoctorsDetails() {
   };
 
   const addDocEditModalSetting = (doctor) => {
-    // setDoctor(doctor);
-    // setDoctorEditModal(!showDoctorEditModal);
     dispatch(setCurrentDoctor(doctor));
     dispatch(showDocEditModel(!showDoctorEditModal))
 
   };
 
   const addDocinfoModalSetting = (doctor) => {
-    // setDoctor(doctor);
-    // setDoctorInfoModal(!showDoctorInfoModal);
-
     dispatch(setCurrentDoctor(doctor));
     dispatch(showDocInfoModel(!showDoctorInfoModal))
-
   };
 
   const handlePageUpdate = () => {
@@ -102,8 +95,6 @@ function DoctorsDetails() {
         {showDoctorInfoModal && (
           <DisplayDoctorInfo
           addDocinfoModalSetting={addDocinfoModalSetting}
-            handlePageUpdate={handlePageUpdate}
-            authContext={authContext}
           />
         )}
         {/* Table  */}

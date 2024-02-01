@@ -4,8 +4,6 @@ import {useSelector} from "react-redux";
 
 export default function DisplayDoctorInfo({
   addDocinfoModalSetting,
-  handlePageUpdate,
-  authContext
 }) {
   const [open, setOpen] = useState(true);
   const cancelButtonRef = useRef(null);

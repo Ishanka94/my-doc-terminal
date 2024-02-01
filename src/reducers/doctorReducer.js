@@ -37,9 +37,7 @@ const doctorReducer = (state = initialState, action) => {
                 doctor: action.payload,
             }
         case UPDATE_DOCTOR_STATUS:
-            console.log(action.payload)
             const updatedDocIndex = state.doctors.findIndex(item => item.doctorId === state.doctor.doctorId)
-            console.log('index is - ' + updatedDocIndex)
             return {
                 ...state,
                 doctor: {...state.doctor, status: action.payload},

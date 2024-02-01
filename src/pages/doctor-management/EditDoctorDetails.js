@@ -36,21 +36,10 @@ export default function EditDoctorDetails({
 
   const dispatch = useDispatch();
   const currentDoctor = useSelector(state => state.doctor.doctor)
-  const doctorsList = useSelector(state => state.doctor.doctors)
-
-  const [doctor, setDoctor] = useState(selectedDoctor ? selectedDoctor : {
-    userID: authContext.user,
-    doctorId: "",
-    doctorName: "",
-    category: "",
-    nic: "",
-    attachment: "",
-    email: "",
-    contact: ""
-  });
   const [open, setOpen] = useState(true);
   const cancelButtonRef = useRef(null);
-  let selectedStatus = getCurrentStatus(selectedDoctor);
+  
+  let selectedStatus = getCurrentStatus(currentDoctor);
   const [selected, setSelected] = useState(selectedStatus ? selectedStatus : docStatus[0]);
 
   const doctorService = new DoctorService(FetchClient);
@@ -63,8 +52,6 @@ export default function EditDoctorDetails({
 
   // POST Data
   const updateDoctor = async () => {
-    // doctor.status = selected.key;
-    // doctor = { ...doctor, status: selected.key }
     const docObj = { doctorId: currentDoctor.doctorId, status: selected.key };
     const endpoint = window.Configs.backendUrl + 'auth/update';
     try {
