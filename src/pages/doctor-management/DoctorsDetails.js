@@ -35,6 +35,8 @@ function DoctorsDetails() {
   const [selected, setSelected] = useState(docStatus[0]);
   const [updatePage, setUpdatePage] = useState(true);
   const [pageCount, setPageCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [forcePage, setForcePage] = useState(0);
 
   const authContext = useContext(AuthContext);
   const doctorService = new DoctorService(FetchClient);
@@ -45,10 +47,18 @@ function DoctorsDetails() {
     fetchDoctors(0);
   }, [AppConstants.TABLE_PAGE_SIZE]);
 
+  useEffect(() => {
+    // if (selected.key === docStatus[0].key && currentPage === 0) {
+    //   onClickFilter();
+    // }
+    onClickFilter();
+  }, [selected, currentPage]);
+
 
   const handlePageClick = async (data) => {
     let currentPage = data.selected;
-    fetchDoctors(currentPage);
+    // fetchDoctors(currentPage);
+    setCurrentPage(currentPage)
   };
 
   const fetchDoctors = async (currentPage) => {
@@ -57,7 +67,7 @@ function DoctorsDetails() {
       const endpoint = window.Configs.backendUrl + `auth/get-all-users?page=${currentPage}&limit=${AppConstants.TABLE_PAGE_SIZE}`;
       const res = await doctorService.getDoctors(endpoint);
       const data = await res.json();
-      const doctorsList = data?.data?.allUsers;
+      const doctorsList = data?.data?.userList;
       const total = data?.data?.total;
       setPageCount(Math.ceil(total / AppConstants.TABLE_PAGE_SIZE));
       dispatch(updateDoctors(doctorsList))
@@ -65,6 +75,40 @@ function DoctorsDetails() {
       logger.error(error);
     }
   };
+
+  const onChangeStatus = (selectedStatus) => {
+
+    setSelected(selectedStatus);
+    setCurrentPage(0);
+  }
+
+  const onClickFilter = async () => {
+    try {
+      logger.log('Filter doctors by status', 'DoctorsDetails.js');
+      const endpoint = window.Configs.backendUrl + `auth/get-users-by-status?status=${selected?.key}&page=${currentPage}&limit=${AppConstants.TABLE_PAGE_SIZE}`;
+      const res = await doctorService.getDoctors(endpoint);
+      const data = await res.json();
+      const doctorsList = data?.data?.userList;
+      const total = data?.data?.total;
+      setPageCount(Math.ceil(total / AppConstants.TABLE_PAGE_SIZE));
+      dispatch(updateDoctors(doctorsList))
+      // setForcePage(0);
+    } catch (error) {
+      logger.error(error);
+    }
+  }
+
+  const onClickReset = () => {
+    // setSelected(docStatus[0], () => {
+    //   console.log('finished update')
+    //   onClickFilter();
+    // })
+    setSelected(docStatus[0]);
+    setCurrentPage(0);
+    // onClickFilter();
+  }
+
+
 
   const addSaleModalSetting = () => {
     dispatch(showDocModel(!showDoctorModal))
@@ -116,7 +160,7 @@ function DoctorsDetails() {
             </div>
             <div className="flex gap-4 items-center">
               <label>Status</label>
-              <Listbox value={selected} onChange={setSelected}>
+              <Listbox value={selected} onChange={onChangeStatus}>
                 <div className="relative mt-1">
                   <Listbox.Button className="relative w-40 cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
                     <span className="block truncate">{selected.name}</span>
@@ -168,10 +212,22 @@ function DoctorsDetails() {
               </Listbox>
               <button
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold p-2 text-xs rounded"
+                onClick={onClickReset}
+              >
+                Reset
+              </button>
+              <button
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold p-2 text-xs rounded"
+                onClick={onClickFilter}
+              >
+                Filter
+              </button>
+              {/* <button
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold p-2 text-xs rounded"
                 onClick={addSaleModalSetting}
               >
                 Add Doctor
-              </button>
+              </button> */}
             </div>
           </div>
           <table className="min-w-full divide-y-2 divide-gray-200 text-sm">
@@ -223,8 +279,8 @@ function DoctorsDetails() {
         </div>
         <div className="pagination-container py-3">
           <ReactPaginate
-            previousLabel={"previous"}
-            nextLabel={"next"}
+            previousLabel={"Previous"}
+            nextLabel={"Next"}
             breakLabel={"..."}
             pageCount={pageCount}
             marginPagesDisplayed={2}
@@ -240,6 +296,7 @@ function DoctorsDetails() {
             breakClassName={"page-item"}
             breakLinkClassName={"page-link"}
             activeClassName={"active"}
+            forcePage={currentPage}
           />
         </div>
       </div>
