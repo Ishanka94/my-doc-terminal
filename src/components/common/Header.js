@@ -35,7 +35,7 @@ export default function Header() {
                       <div className="flex justify-center items-center gap-2">
                         <img
                           className="h-8 w-8"
-                          src={require("../../assets/logo_metacodz.png")}
+                          src={require("../../assets/logo2_metacodz.png")}
                           alt="Doctor Admin Terminal"
                         />
                         <span className="font-bold text-white italic">
