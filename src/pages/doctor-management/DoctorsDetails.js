@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, Fragment  } from 'react';
+import React, { useState, useEffect, useContext, Fragment } from 'react';
 import AddDoctorDetails from './AddDoctorDetails';
 import EditDoctorDetails from './EditDoctorDetails';
 import AuthContext from '../../contexts/AuthContext';
@@ -9,7 +9,7 @@ import * as AppConstants from '../../util/constants';
 import ConsoleLogger from '../../util/Logger';
 import { PencilIcon, Bars3Icon } from '@heroicons/react/20/solid';
 import DisplayDoctorInfo from './DisplayDoctorInfo';
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateDoctors, showDocModel, setCurrentDoctor, showDocEditModel, showDocInfoModel } from "../../actions/doctorActions";
 import { Dialog, Transition, Listbox } from "@headlessui/react";
 import * as DoctorStatus from '../../util/constants/DoctorStatus';
@@ -18,8 +18,8 @@ import { CheckIcon, ChevronUpDownIcon, ChevronDownIcon } from '@heroicons/react/
 const ALL = 'ALL';
 
 const docStatus = [
-  { name: 'All', key: ALL  },
-  { name: 'Active', key: DoctorStatus.ACTIVE  },
+  { name: 'All', key: ALL },
+  { name: 'Active', key: DoctorStatus.ACTIVE },
   { name: 'Inactive', key: DoctorStatus.INACTIVE },
   { name: 'Pending', key: DoctorStatus.PENDING_APPROVAL }
 ]
@@ -27,14 +27,14 @@ const docStatus = [
 function DoctorsDetails() {
 
   const dispatch = useDispatch();
-  const showDoctorModal = useSelector(state => state.doctor.showDoctorModal)
-  const showDoctorEditModal = useSelector(state => state.doctor.showDoctorEditModal)
-  const showDoctorInfoModal = useSelector(state => state.doctor.showDoctorInfoModal)
-  const doctors = useSelector(state => state.doctor.doctors)
-  const doctor = useSelector(state => state.doctor.doctor)
+  const showDoctorModal = useSelector(state => state.doctor.showDoctorModal);
+  const showDoctorEditModal = useSelector(state => state.doctor.showDoctorEditModal);
+  const showDoctorInfoModal = useSelector(state => state.doctor.showDoctorInfoModal);
+  const doctors = useSelector(state => state.doctor.doctors);
+  const doctor = useSelector(state => state.doctor.doctor);
   const [selected, setSelected] = useState(docStatus[0]);
   const [updatePage, setUpdatePage] = useState(true);
-  const [pageCount, setpageCount] = useState(0);
+  const [pageCount, setPageCount] = useState(0);
 
   const authContext = useContext(AuthContext);
   const doctorService = new DoctorService(FetchClient);
@@ -59,9 +59,9 @@ function DoctorsDetails() {
       const data = await res.json();
       const doctorsList = data?.data?.allUsers;
       const total = data?.data?.total;
-      setpageCount(Math.ceil(total / AppConstants.TABLE_PAGE_SIZE));
+      setPageCount(Math.ceil(total / AppConstants.TABLE_PAGE_SIZE));
       dispatch(updateDoctors(doctorsList))
-    } catch(error) {
+    } catch (error) {
       logger.error(error);
     }
   };
@@ -73,7 +73,6 @@ function DoctorsDetails() {
   const addDocEditModalSetting = (doctor) => {
     dispatch(setCurrentDoctor(doctor));
     dispatch(showDocEditModel(!showDoctorEditModal))
-
   };
 
   const addDocinfoModalSetting = (doctor) => {
@@ -86,8 +85,8 @@ function DoctorsDetails() {
   };
 
   return (
-    <div className="col-span-12 lg:col-span-10  flex justify-center">
-      <div className=" flex flex-col gap-5 w-11/12">
+    <div className="col-span-12 lg:col-span-10 flex flex-col items-center">
+      <div className="flex flex-col gap-5 w-11/12">
         {showDoctorModal && (
           <AddDoctorDetails
             addSaleModalSetting={addSaleModalSetting}
@@ -98,7 +97,7 @@ function DoctorsDetails() {
         )}
         {showDoctorEditModal && (
           <EditDoctorDetails
-          addDocEditModalSetting={addDocEditModalSetting}
+            addDocEditModalSetting={addDocEditModalSetting}
             selectedDoctor={doctor}
             handlePageUpdate={handlePageUpdate}
             authContext={authContext}
@@ -106,21 +105,20 @@ function DoctorsDetails() {
         )}
         {showDoctorInfoModal && (
           <DisplayDoctorInfo
-          addDocinfoModalSetting={addDocinfoModalSetting}
+            addDocinfoModalSetting={addDocinfoModalSetting}
           />
         )}
-        {/* Table  */}
-        <div className="overflow-x-auto rounded-lg border bg-white border-gray-200 ">
-          <div className="flex justify-between pt-5 pb-3 px-3">
-            <div className="flex gap-4 justify-center items-center ">
+        {/* Table */}
+        <div className="overflow-x-auto rounded-lg border bg-white border-gray-200">
+          <div className="flex justify-between pt-5 pb-3 px-3 items-center">
+            <div className="flex gap-4 items-center">
               <span className="font-bold">Doctor Details</span>
             </div>
-            
-           
-            <label>Status</label>
-            <Listbox value={selected} onChange={setSelected}>
+            <div className="flex gap-4 items-center">
+              <label>Status</label>
+              <Listbox value={selected} onChange={setSelected}>
                 <div className="relative mt-1">
-                  <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                  <Listbox.Button className="relative w-40 cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
                     <span className="block truncate">{selected.name}</span>
                     <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                       <ChevronDownIcon
@@ -135,7 +133,7 @@ function DoctorsDetails() {
                     leaveFrom="opacity-100"
                     leaveTo="opacity-0"
                   >
-                    <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
+                    <Listbox.Options className="absolute mt-1 max-h-60 w-40 overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
                       {docStatus.map((status, statusIdx) => (
                         <Listbox.Option
                           key={statusIdx}
@@ -168,15 +166,10 @@ function DoctorsDetails() {
                   </Transition>
                 </div>
               </Listbox>
-
-
-            
-            <div className="flex gap-4">
               <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold p-2 text-xs  rounded"
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold p-2 text-xs rounded"
                 onClick={addSaleModalSetting}
               >
-                {/* <Link to="/inventory/add-product">Add Product</Link> */}
                 Add Doctor
               </button>
             </div>
@@ -198,67 +191,60 @@ function DoctorsDetails() {
                 </th>
               </tr>
             </thead>
-
             <tbody className="divide-y divide-gray-200">
-              {doctors.map((element, index) => {
-                return (
-                  <tr key={element._id}>
-                    <td className="whitespace-nowrap px-4 py-2  text-gray-900">
-                      {element.doctorId}
-                    </td>
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                      {element.doctorName}
-                    </td>
-                    {/* <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                      {new Date(element.PurchaseDate).toLocaleDateString() ==
-                      new Date().toLocaleDateString()
-                        ? "Today"
-                        : element.PurchaseDate}
-                    </td> */}
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                      {element.email}
-                    </td>
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                      {element.nic}
-                    </td>
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                      <button onClick={() => addDocEditModalSetting(element)}>
-                        <PencilIcon className="h-5 w-5" aria-hidden="true" />
-                      </button>
-                    </td>
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                      <button onClick={() => addDocinfoModalSetting(element)}>
-                        <Bars3Icon className="h-5 w-5" aria-hidden="true" />
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
+              {doctors.map((element, index) => (
+                <tr key={element._id}>
+                  <td className="whitespace-nowrap px-4 py-2 text-gray-900">
+                    {element.doctorId}
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                    {element.doctorName}
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                    {element.email}
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                    {element.nic}
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                    <button onClick={() => addDocEditModalSetting(element)}>
+                      <PencilIcon className="h-5 w-5" aria-hidden="true" />
+                    </button>
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                    <button onClick={() => addDocinfoModalSetting(element)}>
+                      <Bars3Icon className="h-5 w-5" aria-hidden="true" />
+                    </button>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
+        <div className="pagination-container py-3">
+          <ReactPaginate
+            previousLabel={"previous"}
+            nextLabel={"next"}
+            breakLabel={"..."}
+            pageCount={pageCount}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={5}
+            onPageChange={handlePageClick}
+            containerClassName={"pagination justify-center"}
+            pageClassName={"page-item"}
+            pageLinkClassName={"page-link"}
+            previousClassName={"page-item"}
+            previousLinkClassName={"page-link"}
+            nextClassName={"page-item"}
+            nextLinkClassName={"page-link"}
+            breakClassName={"page-item"}
+            breakLinkClassName={"page-link"}
+            activeClassName={"active"}
+          />
+        </div>
       </div>
-      <ReactPaginate 
-        previousLabel={"previous"}
-        nextLabel={"next"}
-        breakLabel={"..."}
-        pageCount={pageCount}
-        marginPagesDisplayed={2}
-        pageRangeDisplayed={3}
-        onPageChange={handlePageClick}
-        containerClassName={"pagination justify-content-center"}
-        pageClassName={"page-item"}
-        pageLinkClassName={"page-link"}
-        previousClassName={"page-item"}
-        previousLinkClassName={"page-link"}
-        nextClassName={"page-item"}
-        nextLinkClassName={"page-link"}
-        breakClassName={"page-item"}
-        breakLinkClassName={"page-link"}
-        activeClassName={"active"}
-      />
     </div>
-  );
+  )
 }
 
 export default DoctorsDetails;
