@@ -11,9 +11,9 @@ import { PencilIcon, Bars3Icon } from '@heroicons/react/20/solid';
 import DisplayDoctorInfo from './DisplayDoctorInfo';
 import { useDispatch, useSelector } from "react-redux";
 import { updateDoctors, showDocModel, setCurrentDoctor, showDocEditModel, showDocInfoModel } from "../../actions/doctorActions";
-import { Dialog, Transition, Listbox } from "@headlessui/react";
+import { Transition, Listbox } from "@headlessui/react";
 import * as DoctorStatus from '../../util/constants/DoctorStatus';
-import { CheckIcon, ChevronUpDownIcon, ChevronDownIcon } from '@heroicons/react/20/solid';
+import { CheckIcon, ChevronDownIcon } from '@heroicons/react/20/solid';
 
 const ALL = 'ALL';
 
@@ -36,7 +36,6 @@ function DoctorsDetails() {
   const [updatePage, setUpdatePage] = useState(true);
   const [pageCount, setPageCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
-  const [forcePage, setForcePage] = useState(0);
 
   const authContext = useContext(AuthContext);
   const doctorService = new DoctorService(FetchClient);
@@ -44,40 +43,16 @@ function DoctorsDetails() {
   const logger = new ConsoleLogger(window.Configs.logLevel);
 
   useEffect(() => {
-    fetchDoctors(0);
-  }, [AppConstants.TABLE_PAGE_SIZE]);
-
-  useEffect(() => {
-    // if (selected.key === docStatus[0].key && currentPage === 0) {
-    //   onClickFilter();
-    // }
     onClickFilter();
   }, [selected, currentPage]);
 
 
   const handlePageClick = async (data) => {
     let currentPage = data.selected;
-    // fetchDoctors(currentPage);
     setCurrentPage(currentPage)
   };
 
-  const fetchDoctors = async (currentPage) => {
-    try {
-      logger.log('Sending all user fetch request', 'DoctorsDetails.js');
-      const endpoint = window.Configs.backendUrl + `auth/get-all-users?page=${currentPage}&limit=${AppConstants.TABLE_PAGE_SIZE}`;
-      const res = await doctorService.getDoctors(endpoint);
-      const data = await res.json();
-      const doctorsList = data?.data?.userList;
-      const total = data?.data?.total;
-      setPageCount(Math.ceil(total / AppConstants.TABLE_PAGE_SIZE));
-      dispatch(updateDoctors(doctorsList))
-    } catch (error) {
-      logger.error(error);
-    }
-  };
-
   const onChangeStatus = (selectedStatus) => {
-
     setSelected(selectedStatus);
     setCurrentPage(0);
   }
@@ -92,23 +67,15 @@ function DoctorsDetails() {
       const total = data?.data?.total;
       setPageCount(Math.ceil(total / AppConstants.TABLE_PAGE_SIZE));
       dispatch(updateDoctors(doctorsList))
-      // setForcePage(0);
     } catch (error) {
       logger.error(error);
     }
   }
 
   const onClickReset = () => {
-    // setSelected(docStatus[0], () => {
-    //   console.log('finished update')
-    //   onClickFilter();
-    // })
     setSelected(docStatus[0]);
     setCurrentPage(0);
-    // onClickFilter();
   }
-
-
 
   const addSaleModalSetting = () => {
     dispatch(showDocModel(!showDoctorModal))
