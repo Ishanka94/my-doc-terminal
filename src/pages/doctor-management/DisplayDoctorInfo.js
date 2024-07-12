@@ -137,7 +137,10 @@ export default function DisplayDoctorInfo({
                             >
                               Attachment
                             </label>
-                            { currentDoctor.attachment ? <img src={`${currentDoctor.attachment}`} /> : null }
+                            {/* { currentDoctor.attachment ? <img src={`${currentDoctor.attachment}`} /> : null } */}
+                            <a href={currentDoctor.attachment} target="_blank">
+                              <img src={currentDoctor.attachment} width="200" height="300"/>
+                            </a>
                           </div>
                         </div>
                         <div className="flex items-center space-x-4">
