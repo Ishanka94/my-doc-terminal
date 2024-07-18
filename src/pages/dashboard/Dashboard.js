@@ -3,6 +3,7 @@ import Chart from "react-apexcharts";
 import AuthContext from "../../contexts/AuthContext";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { useTotalUsersCount } from '../../hooks/useHomePageUsers';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 export const data = {
@@ -37,6 +38,10 @@ function Dashboard() {
   const [purchaseAmount, setPurchaseAmount] = useState("");
   const [stores, setStores] = useState([]);
   const [products, setProducts] = useState([]);
+
+  const { totalUsersCount, totalActiveUserCount, totalPendingUserCount, totalRejectedUserCount } = useTotalUsersCount();
+  // console.log(totalUserCountObj)
+
 
   const [chart, setChart] = useState({
     options: {
@@ -157,15 +162,15 @@ function Dashboard() {
 
           <div>
             <strong className="block text-sm font-medium text-gray-500">
-              Widget 1
+              Total Onboarded Users
             </strong>
 
             <p>
               <span className="text-2xl font-medium text-gray-900">
-                {saleAmount}
+                {totalUsersCount}
               </span>
 
-              <span className="text-xs text-gray-500"> 200 </span>
+              {/* <span className="text-xs text-gray-500"> {totalUsersCount} </span> */}
             </p>
           </div>
         </article>
@@ -192,16 +197,15 @@ function Dashboard() {
 
           <div>
             <strong className="block text-sm font-medium text-gray-500">
-              Widget 2
+              Total Active Users
             </strong>
 
             <p>
               <span className="text-2xl font-medium text-gray-900">
-                {" "}
-                {purchaseAmount}{" "}
+              { totalActiveUserCount }
               </span>
 
-              <span className="text-xs text-gray-500"> from 404.32 </span>
+              {/* <span className="text-xs text-gray-500"> { totalActiveUserCount } </span> */}
             </p>
           </div>
         </article>
@@ -227,13 +231,12 @@ function Dashboard() {
 
           <div>
             <strong className="block text-sm font-medium text-gray-500">
-              Widget 3
+              Total Pending Users
             </strong>
 
             <p>
               <span className="text-2xl font-medium text-gray-900">
-                {" "}
-                {products.length}{" "}
+                { totalPendingUserCount }
               </span>
 
               {/* <span className="text-xs text-gray-500"> from $404.32 </span> */}
@@ -262,13 +265,12 @@ function Dashboard() {
 
           <div>
             <strong className="block text-sm font-medium text-gray-500">
-              Widget 4
+              Total Rejected Users
             </strong>
 
             <p>
               <span className="text-2xl font-medium text-gray-900">
-                {" "}
-                {stores.length}{" "}
+                { totalRejectedUserCount }
               </span>
 
               {/* <span className="text-xs text-gray-500"> from 0 </span> */}
