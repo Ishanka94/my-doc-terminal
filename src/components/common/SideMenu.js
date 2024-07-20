@@ -92,6 +92,8 @@ function SideMenu() {
               </strong>
 
               <span> {localStorageData.email} </span>
+              <br />
+              <span> Version: {window.Configs.appVersion} </span>
             </p>
           </div>
         </div>
