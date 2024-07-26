@@ -50,7 +50,7 @@ function Login() {
     <>
       <div className="grid grid-cols-1 sm:grid-cols-2 h-screen  items-center place-items-center">
         <div className="flex justify-center">
-          <img src={require("../../assets/signup.jpg")} alt="" />
+          <img src={require("../../assets/doctor-2.jpeg")} alt="" />
         </div>
         <div className="w-full max-w-md space-y-8 p-10 rounded-lg">
           <div>
