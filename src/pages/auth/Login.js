@@ -5,6 +5,9 @@ import AuthContext from "../../contexts/AuthContext";
 import DoctorService from '../../services/DoctorService';
 import FetchClient from '../../services/FetchClient';
 import ConsoleLogger from '../../util/Logger';
+import { useDispatch } from 'react-redux';
+import { login } from '../../actions/authActions';
+import { authenticateUser } from '../../api/backendApi';
 
 function Login() {
   const [form, setForm] = useState({
@@ -16,6 +19,7 @@ function Login() {
   const navigate = useNavigate();
   const doctorService = new DoctorService(FetchClient);
   const logger = new ConsoleLogger(window.Configs.logLevel);
+  const dispatch = useDispatch();
 
   const handleInputChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -32,19 +36,28 @@ function Login() {
   };
 
   const loginUser = async (e) => {
-    const endpoint = window.Configs.backendUrl + 'auth/login';
+    // const endpoint = window.Configs.backendUrl + 'auth/login';
     if (form.email === "" || form.password === "") {
       alert("To login user, enter details to proceed...");
     } else {
-      try {
-        const res = await doctorService.sendPostRequest(endpoint, form);
-        const data = await res.json();
-        if (data && data.token) {
-          authCheck(data.user);
-        }
-      } catch(error) {
-        logger.error(error);
+      // try {
+      //   const res = await doctorService.sendPostRequest(endpoint, form);
+      //   const data = await res.json();
+      //   if (data && data.token) {
+      //     authCheck(data.user);
+      //   }
+      // } catch(error) {
+      //   logger.error(error);
+      // }
+      const response = await authenticateUser(form);
+      console.log(response.user)
+      if (response?.user){
+        dispatch(login(response));
+        setTimeout(() => {
+          navigate("/");
+        }, 3000)
       }
+      // console.log(response);
     }
   };
 

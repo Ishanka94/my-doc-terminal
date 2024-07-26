@@ -1,8 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 function SideMenu() {
-  const localStorageData = JSON.parse(localStorage.getItem("user"));
+  // const localStorageData = JSON.parse(localStorage.getItem("user"));
+  const authenticatedUser = useSelector(state => state.auth.user);
+  // console.log('Hi bro')
+  // console.log(authenticatedUser)
 
   return (
     <div className="h-full flex-col justify-between  bg-white hidden lg:flex ">
@@ -88,10 +92,10 @@ function SideMenu() {
           <div>
             <p className="text-xs">
               <strong className="block font-medium">
-                Admin
+                { authenticatedUser?.user.doctorName }
               </strong>
 
-              <span> {localStorageData.email} </span>
+              <span> {authenticatedUser?.user.doctorId} </span>
               <br />
               <span> Version: {window.Configs.appVersion} </span>
             </p>

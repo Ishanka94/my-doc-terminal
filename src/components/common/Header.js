@@ -3,6 +3,8 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import AuthContext from "../../contexts/AuthContext";
 import { Link } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { logout } from '../../actions/authActions';
 
 const navigation = [
   { name: "Dashboard", href: "/", current: true },
@@ -21,7 +23,8 @@ function classNames(...classes) {
 
 export default function Header() {
   const authContext = useContext(AuthContext);
-  const localStorageData = JSON.parse(localStorage.getItem("user"));
+  const dispatch = useDispatch();
+  // const localStorageData = JSON.parse(localStorage.getItem("user"));
   return (
     <>
       <div className="min-h-full">
@@ -86,7 +89,7 @@ export default function Header() {
                                       "block px-4 py-2 text-sm text-gray-700"
                                     )}
                                   >
-                                    <span onClick={() => authContext.signout()}>
+                                    <span onClick={() => dispatch(logout())}>
                                       {item.name}{" "}
                                     </span>
                                   </Link>
@@ -150,12 +153,13 @@ export default function Header() {
                     </div>
                     <div className="ml-3">
                       <div className="text-base font-medium leading-none text-white">
-                        {localStorageData.firstName +
-                          " " +
-                          localStorageData.lastName}
+                        {/* {localStorageData.firstName + */}
+                          " "
+                          {/* localStorageData.lastName} */}
+                          Hi there
                       </div>
                       <div className="text-sm font-medium leading-none text-gray-400">
-                        {localStorageData.email}
+                        {/* {localStorageData.email} */}
                       </div>
                     </div>
                     <button
