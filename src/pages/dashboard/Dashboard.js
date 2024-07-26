@@ -36,8 +36,6 @@ export const data = {
 function Dashboard() {
 
   const { totalUsersCount, totalActiveUserCount, totalPendingUserCount, totalRejectedUserCount } = useTotalUsersCount();
-  // console.log(totalUserCountObj)
-
 
   const [chart, setChart] = useState({
     options: {

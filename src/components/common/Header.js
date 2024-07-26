@@ -84,12 +84,13 @@ export default function Header() {
                                 {({ active }) => (
                                   <Link
                                     to={item.href}
+                                    onClick={() => dispatch(logout())}
                                     className={classNames(
                                       active ? "bg-gray-100" : "",
                                       "block px-4 py-2 text-sm text-gray-700"
                                     )}
                                   >
-                                    <span onClick={() => dispatch(logout())}>
+                                    <span>
                                       {item.name}{" "}
                                     </span>
                                   </Link>

@@ -12,7 +12,6 @@ const initialState = {
           user: action.payload,
         };
       case 'LOGOUT':
-        console.log('logout hit')
         return {
           ...state,
           isAuthenticated: false,

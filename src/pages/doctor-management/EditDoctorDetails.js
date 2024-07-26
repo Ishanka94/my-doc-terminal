@@ -46,7 +46,6 @@ export default function EditDoctorDetails({
   const logger = new ConsoleLogger(window.Configs.logLevel);
 
   const closeModal = () => {
-    console.log('on close called');
     addDocEditModalSetting(currentDoctor);
   }
 
@@ -58,7 +57,6 @@ export default function EditDoctorDetails({
       const res = await doctorService.sendPostRequest(endpoint, docObj);
       const data = await res.json();
       if (data) {
-        console.log('doctor status updated - ' + selected.key)
         dispatch(updateDoctorStatus(selected.key))
         alert("Doctor status updated");
         handlePageUpdate();

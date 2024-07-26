@@ -25,30 +25,10 @@ function Login() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const authCheck = (data) => {
-    setTimeout(() => {
-        localStorage.setItem("user", JSON.stringify(data));
-          authContext.signin(data._id, () => {
-            navigate("/");
-        });
-
-    }, 3000);
-  };
-
   const loginUser = async (e) => {
-    // const endpoint = window.Configs.backendUrl + 'auth/login';
     if (form.email === "" || form.password === "") {
       alert("To login user, enter details to proceed...");
     } else {
-      // try {
-      //   const res = await doctorService.sendPostRequest(endpoint, form);
-      //   const data = await res.json();
-      //   if (data && data.token) {
-      //     authCheck(data.user);
-      //   }
-      // } catch(error) {
-      //   logger.error(error);
-      // }
       const response = await authenticateUser(form);
       console.log(response.user)
       if (response?.user){
@@ -57,7 +37,6 @@ function Login() {
           navigate("/");
         }, 3000)
       }
-      // console.log(response);
     }
   };
 
