@@ -92,10 +92,10 @@ function SideMenu() {
           <div>
             <p className="text-xs">
               <strong className="block font-medium">
-                { authenticatedUser?.user.doctorName }
+                { authenticatedUser?.doctorName }
               </strong>
 
-              <span> {authenticatedUser?.user.doctorId} </span>
+              <span> {authenticatedUser?.doctorId} </span>
               <br />
               <span> Version: {window.Configs.appVersion} </span>
             </p>

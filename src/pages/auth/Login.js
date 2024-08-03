@@ -7,7 +7,7 @@ import FetchClient from '../../services/FetchClient';
 import ConsoleLogger from '../../util/Logger';
 import { useDispatch } from 'react-redux';
 import { login } from '../../actions/authActions';
-import { authenticateUser } from '../../api/backendApi';
+import { authenticateUser, fetchUserById } from '../../api/backendApi';
 
 function Login() {
   const [form, setForm] = useState({
@@ -30,9 +30,10 @@ function Login() {
       alert("To login user, enter details to proceed...");
     } else {
       const response = await authenticateUser(form);
-      console.log(response.user)
-      if (response?.user){
-        dispatch(login(response));
+      if (response?.status == 1){
+        const userData = await fetchUserById(response._id);
+        // console.log(userData?.data[0])
+        dispatch(login(userData?.data[0]));
         setTimeout(() => {
           navigate("/");
         }, 3000)

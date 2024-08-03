@@ -14,3 +14,8 @@ export const authenticateUser = async (body) => {
   });
   return response.json();
 }
+
+export const fetchUserById = async (userRef) => {
+  const response = await fetch(`${window.Configs.backendUrl}/auth/get-user-by-id?id=${userRef}`);
+  return response.json();
+};
