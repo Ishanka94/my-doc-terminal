@@ -32,11 +32,17 @@ function Login() {
       const response = await authenticateUser(form);
       if (response?.status == 1){
         const userData = await fetchUserById(response._id);
-        // console.log(userData?.data[0])
-        dispatch(login(userData?.data[0]));
-        setTimeout(() => {
-          navigate("/");
-        }, 3000)
+        const userObj = userData?.data[0];
+        if (userObj?.role === 'ADMIN') {
+          dispatch(login(userObj));
+          setTimeout(() => {
+            navigate("/");
+          }, 1000)
+        } else {
+          alert('You are not admin');
+        }
+      } else {
+        alert('Unknown error occured. Check credentials and backend server');
       }
     }
   };
