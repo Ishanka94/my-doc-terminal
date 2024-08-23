@@ -30,11 +30,10 @@ function Login() {
       alert("To login user, enter details to proceed...");
     } else {
       const response = await authenticateUser(form);
-      if (response?.status == 1){
+      if (response?.errCode == 1){
         const userData = await fetchUserById(response._id);
-        const userObj = userData?.data[0];
-        if (userObj?.role === 'ADMIN') {
-          dispatch(login(userObj));
+        if (userData?.data?.role === 'ADMIN') {
+          dispatch(login(userData?.data));
           setTimeout(() => {
             navigate("/");
           }, 1000)
