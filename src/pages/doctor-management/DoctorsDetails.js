@@ -29,7 +29,7 @@ const docStatus = [
 function DoctorsDetails() {
 
   const channels = [
-    { name: 'Any', key: ANY },
+    // { name: 'Any', key: ANY },
     { name: 'Web', key: Channels.WEB },
     { name: 'Mobile', key: Channels.MOBILE },
   ]
@@ -45,15 +45,16 @@ function DoctorsDetails() {
   const [pageCount, setPageCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
   const [channelSelected, setChannels] = useState([]); 
+  const [name, setName] = useState('');
 
   const authContext = useContext(AuthContext);
   const doctorService = new DoctorService(FetchClient);
 
   const logger = new ConsoleLogger(window.Configs.logLevel);
 
-  useEffect(() => {
-    onClickFilter();
-  }, [selected, currentPage]);
+  // useEffect(() => {
+  //   onClickFilter();
+  // }, [selected, currentPage]);
 
 
   const handlePageClick = async (data) => {
@@ -73,7 +74,16 @@ function DoctorsDetails() {
   const onClickFilter = async () => {
     try {
       logger.log('Filter doctors by status', 'DoctorsDetails.js');
-      const endpoint = window.Configs.backendUrl + `auth/get-users-by-status?status=${selected?.key}&page=${currentPage}&limit=${AppConstants.TABLE_PAGE_SIZE}`;
+      let endpoint;
+      // const endpoint = window.Configs.backendUrl + `auth/get-users-by-status?status=${selected?.key}&page=${currentPage}&limit=${AppConstants.TABLE_PAGE_SIZE}`;
+      if (channelSelected.length > 1) {
+        endpoint = window.Configs.backendUrl + `auth/get-users-by-status-and-channel?status=${selected?.key}&channel=WEB&channel=MOBILE&docName=${name}&page=${currentPage}&limit=${AppConstants.TABLE_PAGE_SIZE}`;
+      } else if (channelSelected.length === 0) {
+        endpoint = window.Configs.backendUrl + `auth/get-users-by-status-and-channel?status=${selected?.key}&docName=${name}&page=${currentPage}&limit=${AppConstants.TABLE_PAGE_SIZE}`;
+      } else {
+        endpoint = window.Configs.backendUrl + `auth/get-users-by-status-and-channel?status=${selected?.key}&channel=${channelSelected[0]?.key}&docName=${name}&page=${currentPage}&limit=${AppConstants.TABLE_PAGE_SIZE}`;
+      }
+
       const res = await doctorService.getDoctors(endpoint);
       const data = await res.json();
       const doctorsList = data?.data?.userList;
@@ -87,6 +97,8 @@ function DoctorsDetails() {
 
   const onClickReset = () => {
     setSelected(docStatus[0]);
+    setChannels([]);
+    setName('');
     setCurrentPage(0);
   }
 
@@ -139,6 +151,14 @@ function DoctorsDetails() {
               <span className="font-bold">Doctor Details</span>
             </div>
             <div className="flex gap-4 items-center">
+              <label>Doc name</label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-40 rounded-lg border-gray-300 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm"
+                placeholder="Search by name"
+              />
               <label>Status</label>
               <Listbox value={selected} onChange={onChangeStatus}>
                 <div className="relative mt-1">
