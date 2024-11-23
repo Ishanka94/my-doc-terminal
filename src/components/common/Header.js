@@ -39,10 +39,10 @@ export default function Header() {
                         <img
                           className="h-8 w-8"
                           src={require("../../assets/logo2_metacodz.png")}
-                          alt="Doctor Admin Terminal"
+                          alt="ELS Admin Terminal"
                         />
                         <span className="font-bold text-white italic">
-                          Doctor Admin Terminal
+                          ELS Admin Terminal
                         </span>
                       </div>
                     </div>

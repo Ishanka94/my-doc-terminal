@@ -1,6 +1,6 @@
 {
   "name": "my-doc-admin-terminal",
-  "version": "24.1.7",
+  "version": "24.2.1",
   "private": true,
   "dependencies": {
     "@headlessui/react": "^1.7.13",

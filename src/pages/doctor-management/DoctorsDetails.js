@@ -52,14 +52,14 @@ function DoctorsDetails() {
 
   const logger = new ConsoleLogger(window.Configs.logLevel);
 
-  // useEffect(() => {
-  //   onClickFilter();
-  // }, [selected, currentPage]);
+  useEffect(() => {
+    onClickFilter();
+  }, [currentPage]);
 
 
   const handlePageClick = async (data) => {
     let currentPage = data.selected;
-    setCurrentPage(currentPage)
+    setCurrentPage(currentPage);
   };
 
   const onChangeStatus = (selectedStatus) => {
