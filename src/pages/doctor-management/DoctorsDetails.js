@@ -13,9 +13,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateDoctors, showDocModel, setCurrentDoctor, showDocEditModel, showDocInfoModel } from "../../actions/doctorActions";
 import { Transition, Listbox } from "@headlessui/react";
 import * as DoctorStatus from '../../util/constants/DoctorStatus';
+import * as Channels from '../../util/constants/Channels';
 import { CheckIcon, ChevronDownIcon } from '@heroicons/react/20/solid';
 
 const ALL = 'ALL';
+const ANY = 'ANY';
 
 const docStatus = [
   { name: 'All', key: ALL },
@@ -25,6 +27,12 @@ const docStatus = [
 ]
 
 function DoctorsDetails() {
+
+  const channels = [
+    { name: 'Any', key: ANY },
+    { name: 'Web', key: Channels.WEB },
+    { name: 'Mobile', key: Channels.MOBILE },
+  ]
 
   const dispatch = useDispatch();
   const showDoctorModal = useSelector(state => state.doctor.showDoctorModal);
@@ -36,6 +44,7 @@ function DoctorsDetails() {
   const [updatePage, setUpdatePage] = useState(true);
   const [pageCount, setPageCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
+  const [channelSelected, setChannels] = useState([]); 
 
   const authContext = useContext(AuthContext);
   const doctorService = new DoctorService(FetchClient);
@@ -56,6 +65,10 @@ function DoctorsDetails() {
     setSelected(selectedStatus);
     setCurrentPage(0);
   }
+
+  const onChangeChannel = (selectedChannels) => {
+    setChannels(selectedChannels);
+  };
 
   const onClickFilter = async () => {
     try {
@@ -169,6 +182,62 @@ function DoctorsDetails() {
                                   <CheckIcon className="h-5 w-5" aria-hidden="true" />
                                 </span>
                               ) : null}
+                            </>
+                          )}
+                        </Listbox.Option>
+                      ))}
+                    </Listbox.Options>
+                  </Transition>
+                </div>
+              </Listbox>
+
+              <label>Channel</label>
+              <Listbox value={channelSelected} onChange={onChangeChannel} multiple by="key">
+                <div className="relative mt-1">
+                  <Listbox.Button className="relative w-40 cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                    <span className="block truncate">
+                      {channelSelected.length > 0
+                        ? channelSelected.map((item) => item.name).join(", ")
+                        : "Select channels"}
+                    </span>
+                    <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                      <ChevronDownIcon
+                        className="h-5 w-5 text-gray-400"
+                        aria-hidden="true"
+                      />
+                    </span>
+                  </Listbox.Button>
+                  <Transition
+                    as={Fragment}
+                    leave="transition ease-in duration-100"
+                    leaveFrom="opacity-100"
+                    leaveTo="opacity-0"
+                  >
+                    <Listbox.Options className="absolute mt-1 max-h-60 w-40 overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
+                      {channels.map((channel) => (
+                        <Listbox.Option
+                          key={channel.key}
+                          className={({ active }) =>
+                            `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                              active ? "bg-amber-100 text-amber-900" : "text-gray-900"
+                            }`
+                          }
+                          value={channel}
+                        >
+                          {({ selected }) => (
+                            <>
+                              <span
+                                className={`block truncate ${
+                                  selected ? "font-medium" : "font-normal"
+                                }`}
+                              >
+                                {channel.name}
+                              </span>
+                              {selected && (
+                                <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
+                                  <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                                </span>
+                              )}
                             </>
                           )}
                         </Listbox.Option>

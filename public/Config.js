@@ -1,5 +1,5 @@
 var Configs = {
-    appVersion: "2024.1.1",
-    backendUrl: "http://localhost:5001/api/",
+    appVersion: "24.1.1",
+    backendUrl: "http://localhost:5000/api/",
     logLevel: 'info'
 }

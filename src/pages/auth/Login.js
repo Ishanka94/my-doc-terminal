@@ -13,6 +13,7 @@ function Login() {
   const [form, setForm] = useState({
     email: "",
     password: "",
+    channel: 'ADMIN'
   });
 
   const authContext = useContext(AuthContext);
