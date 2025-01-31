@@ -14,7 +14,7 @@ import Store from "./pages/Store";
 import Sales from "./pages/Sales";
 import PurchaseDetails from "./pages/PurchaseDetails";
 import DoctorsDetails from "./pages/doctor-management/DoctorsDetails";
-
+import RegistrantsList from "./pages/certificate-management/RegistrantsList";
 
 const App = () => {
   const [user, setUser] = useState("");
@@ -75,6 +75,7 @@ const App = () => {
             <Route path="/inventory" element={<Inventory />} />
             <Route path="/purchase-details" element={<PurchaseDetails />} />
             <Route path="/doctors-details" element={<DoctorsDetails />} />
+            <Route path="/registrants-list" element={<RegistrantsList />} />
             <Route path="/sales" element={<Sales />} />
             <Route path="/manage-store" element={<Store />} />
           </Route>

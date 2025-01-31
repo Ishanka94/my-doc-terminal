@@ -1,12 +1,11 @@
-import React from "react";
+import { React, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 function SideMenu() {
   // const localStorageData = JSON.parse(localStorage.getItem("user"));
   const authenticatedUser = useSelector(state => state.auth.user);
-  // console.log('Hi bro')
-  // console.log(authenticatedUser)
+  const [isReportsOpen, setIsReportsOpen] = useState(false);
 
   return (
     <div className="h-full flex-col justify-between  bg-white hidden lg:flex ">
@@ -57,6 +56,45 @@ function SideMenu() {
             />
             <span className="text-sm font-medium"> Doctor Details</span>
           </Link>
+
+          <div className="flex flex-col">
+            <button
+              onClick={() => setIsReportsOpen(!isReportsOpen)}
+              className="flex items-center justify-between w-full rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+            >
+              <div className="flex items-center gap-2">
+                <img alt="reports-icon" src={require("../../assets/reports-icon.png")} />
+                <span className="text-sm font-medium">Certificates</span>
+              </div>
+              <span>{isReportsOpen ? "▲" : "▼"}</span>
+            </button>
+
+            {/* Sub-menu Items */}
+            {isReportsOpen && (
+              <div className="ml-8 space-y-1">
+                <Link
+                  to="/registrants-list"
+                  className="block rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                >
+                  Session Registrees
+                </Link>
+                <Link
+                  to="/reports/monthly"
+                  className="block rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                >
+                  Session stations
+                </Link>
+                <Link
+                  to="/reports/annual"
+                  className="block rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                >
+                  Other
+                </Link>
+              </div>
+            )}
+          </div>  
+
+
           {/* <Link
             to="/sales"
             className="flex items-center gap-2 rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
