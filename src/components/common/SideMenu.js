@@ -85,10 +85,10 @@ function SideMenu() {
                   Session stations
                 </Link>
                 <Link
-                  to="/reports/annual"
+                  to="/register-professional"
                   className="block rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
                 >
-                  Other
+                  Medical professional Register
                 </Link>
               </div>
             )}
