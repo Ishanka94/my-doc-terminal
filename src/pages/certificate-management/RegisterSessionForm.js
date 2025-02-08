@@ -6,22 +6,37 @@ const RegisterSessionForm = () => {
   const [stations, setStations] = useState([]);  // Dropdown data
   const [selectedStation, setSelectedStation] = useState(null);
   const { register, handleSubmit, setValue } = useForm();
+  const [certificateTypes, setcertificateTypes] = useState([]);  // Dropdown data
+  const [selectedCertificate, setSelectedCertificate] = useState(null);
 
   // Fetch station data from backend
   useEffect(() => {
     fetch("http://localhost:3000/api/certificate/get-all-stations")
       .then(response => response.json())
       .then(data => {
-        console.log(data.data.stationList);
+        // console.log(data.data.stationList);
         setStations(data?.data?.stationList);
         setSelectedStation(data?.data?.stationList[0]);  // Select first by default
-        setValue("station", data?.data?.stationList[0]); // Set default in form
+        setValue("station", data?.data?.stationList[0]?._id); // Set default in form
       })
       .catch(error => console.error("Error fetching stations:", error));
   }, []);
 
+  useEffect(() => {
+    fetch("http://localhost:3000/api/certificate/get-all-certificate-types")
+      .then(response => response.json())
+      .then(data => {
+        console.log(data.data);
+        setcertificateTypes(data?.data?.certificateTypeList);
+        setSelectedCertificate(data?.data?.certificateTypeList[0]);  // Select first by default
+        setValue("certificateType", data?.data?.certificateTypeList[0]._id); // Set default in form
+      })
+      .catch(error => console.error("Error fetching certificate types:", error));
+  }, []);
+
   // Handle form submission
   const onSubmit = async (data) => {
+    console.log(data);
     try {
       data.sessionDuration = {
         from: new Date(data.from).toISOString(),
@@ -30,7 +45,7 @@ const RegisterSessionForm = () => {
       delete data.from;
       delete data.to;
 
-      const response = await fetch("https://your-backend-api.com/register", {
+      const response = await fetch("http://localhost:3000/api/certificate/register-session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
@@ -74,10 +89,29 @@ const RegisterSessionForm = () => {
           className="w-full p-2 border rounded"
         />
 
+        {/* Certificate types (Dropdown with Headless UI) */}
+        <Listbox value={selectedCertificate} onChange={(value) => {
+          setSelectedCertificate(value);
+          setValue("certificateType", value);
+        }}>
+          <div className="relative">
+            <Listbox.Button className="w-full p-2 border rounded bg-white">
+              {selectedCertificate?.name || "Select a certificate type"}
+            </Listbox.Button>
+            <Listbox.Options className="absolute w-full bg-white border rounded mt-1">
+              {certificateTypes.map((certificate, idx) => (
+                <Listbox.Option key={idx} value={certificate} className="p-2 hover:bg-gray-100 cursor-pointer">
+                  {certificate.name}
+                </Listbox.Option>
+              ))}
+            </Listbox.Options>
+          </div>
+        </Listbox>
+
         {/* Station (Dropdown with Headless UI) */}
         <Listbox value={selectedStation} onChange={(value) => {
           setSelectedStation(value);
-          setValue("station", value);
+          setValue("station", value._id);
         }}>
           <div className="relative">
             <Listbox.Button className="w-full p-2 border rounded bg-white">
