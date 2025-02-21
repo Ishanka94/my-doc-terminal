@@ -58,7 +58,7 @@ const RegistrantsList = () => {
         `http://localhost:3000/api/certificate/filter-registrants?registreeName=${searchTerm}&station=${selectedStation}&certificate=${selectedCertificate}`
       );
       const data = await response.json();
-      setFilteredData(data);
+      setFilteredData(data?.data?.registrees);
       setCurrentPage(0);
     } catch (error) {
       console.error("Error filtering registrants:", error);
