@@ -168,7 +168,7 @@ const RegistrantsList = () => {
               {currentData.length > 0 ? (
                 currentData.map((registrant) => (
                   <tr key={registrant._id} className="text-center">
-                    <td className="p-3 border">{registrant.name}</td>
+                    <td className="p-3 border">{registrant.registreeName}</td>
                     <td className="p-3 border">{registrant.station?.name}</td>
                     <td className="p-3 border">{registrant.email}</td>
                     <td className="p-3 border">{registrant.contact}</td>

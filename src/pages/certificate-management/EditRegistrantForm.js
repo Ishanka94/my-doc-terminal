@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { STATUS_MAP } from "../../constants/statusConstants";
 
 const EditRegistrantForm = ({ registrant, onClose, onUpdate }) => {
   const [formData, setFormData] = useState({
@@ -15,7 +16,7 @@ const EditRegistrantForm = ({ registrant, onClose, onUpdate }) => {
     if (registrant) {
     console.log(registrant);
       setFormData({
-        name: registrant.name,
+        name: registrant.registreeName,
         email: registrant.email,
         contact: registrant.contact,
         station: registrant.station?._id || "",
@@ -72,7 +73,19 @@ const EditRegistrantForm = ({ registrant, onClose, onUpdate }) => {
           <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Name" className="w-full p-2 mb-2 border rounded" required />
           <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email" className="w-full p-2 mb-2 border rounded" required />
           <input type="text" name="contact" value={formData.contact} onChange={handleChange} placeholder="Contact" className="w-full p-2 mb-2 border rounded" required />
-          <input type="text" name="status" value={formData.status} onChange={handleChange} placeholder="Status" className="w-full p-2 mb-2 border rounded" required />
+          {/* <input type="text" name="status" value={formData.status} onChange={handleChange} placeholder="Status" className="w-full p-2 mb-2 border rounded" required /> */}
+          <select
+            name="status"
+            value={formData.status}
+            onChange={handleChange}
+            className="w-full p-2 border rounded"
+          >
+            {Object.entries(STATUS_MAP).map(([key, value]) => (
+              <option key={key} value={key}>
+                {value}
+              </option>
+            ))}
+          </select>
           <div className="flex gap-2 mb-2">
             <input type="text" name="from" value={formData.sessionDuration.from} onChange={handleSessionChange} placeholder="Session From" className="w-1/2 p-2 border rounded" required />
             <input type="text" name="to" value={formData.sessionDuration.to} onChange={handleSessionChange} placeholder="Session To" className="w-1/2 p-2 border rounded" required />
