@@ -1,0 +1,90 @@
+import React, { useState, useEffect } from "react";
+
+const EditRegistrantForm = ({ registrant, onClose, onUpdate }) => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    contact: "",
+    station: "",
+    certificateType: "",
+    sessionDuration: { from: "", to: "" },
+    status: ""
+  });
+
+  useEffect(() => {
+    if (registrant) {
+    console.log(registrant);
+      setFormData({
+        name: registrant.name,
+        email: registrant.email,
+        contact: registrant.contact,
+        station: registrant.station?._id || "",
+        certificateType: registrant.certificateType?._id || "",
+        sessionDuration: registrant.sessionDuration || { from: "", to: "" },
+        status: registrant.status
+      });
+    }
+  }, [registrant]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleSessionChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      sessionDuration: {
+        ...formData.sessionDuration,
+        [name]: value
+      }
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(`http://localhost:3000/api/certificate/update-registrant/${registrant._id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      if (response.ok) {
+        onUpdate(); // Refresh registrants list after update
+        onClose();
+      } else {
+        console.error("Failed to update registrant");
+      }
+    } catch (error) {
+      console.error("Error updating registrant:", error);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+      <div className="bg-white p-6 rounded-lg shadow-md w-96">
+        <h2 className="text-lg font-bold mb-4">Edit Registrant</h2>
+        <form onSubmit={handleSubmit}>
+          <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Name" className="w-full p-2 mb-2 border rounded" required />
+          <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email" className="w-full p-2 mb-2 border rounded" required />
+          <input type="text" name="contact" value={formData.contact} onChange={handleChange} placeholder="Contact" className="w-full p-2 mb-2 border rounded" required />
+          <input type="text" name="status" value={formData.status} onChange={handleChange} placeholder="Status" className="w-full p-2 mb-2 border rounded" required />
+          <div className="flex gap-2 mb-2">
+            <input type="text" name="from" value={formData.sessionDuration.from} onChange={handleSessionChange} placeholder="Session From" className="w-1/2 p-2 border rounded" required />
+            <input type="text" name="to" value={formData.sessionDuration.to} onChange={handleSessionChange} placeholder="Session To" className="w-1/2 p-2 border rounded" required />
+          </div>
+          <div className="flex justify-end gap-2">
+            <button type="button" onClick={onClose} className="bg-gray-400 text-white px-4 py-2 rounded">Cancel</button>
+            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default EditRegistrantForm;

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import ReactPaginate from "react-paginate";
+import EditRegistrantForm from "./EditRegistrantForm";
 
 const RegistrantsList = () => {
   const [registrants, setRegistrants] = useState([]);
@@ -12,6 +13,8 @@ const RegistrantsList = () => {
   const [selectedCertificate, setSelectedCertificate] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage] = useState(5);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [currentRegistrant, setCurrentRegistrant] = useState(null);
 
   useEffect(() => {
     fetchRegistrants();
@@ -52,7 +55,7 @@ const RegistrantsList = () => {
 
   const handleFilter = async () => {
     try {
-        console.log('click filter')
+        // console.log('click filter')
         // console.log(selectedStation)
       const response = await fetch(
         `http://localhost:3000/api/certificate/filter-registrants?registreeName=${searchTerm}&station=${selectedStation}&certificate=${selectedCertificate}`
@@ -77,11 +80,35 @@ const RegistrantsList = () => {
     setCurrentPage(selectedPage.selected);
   };
 
+  const handleEdit = (registrant) => {
+    setCurrentRegistrant(registrant);
+    setIsEditModalOpen(true);
+  };
+
+  const handleDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete this registrant?")) {
+      try {
+        await fetch(`http://localhost:3000/api/certificate/delete-registrant/${id}`, {
+          method: "DELETE",
+        });
+        fetchRegistrants(); // Refresh list after deletion
+      } catch (error) {
+        console.error("Error deleting registrant:", error);
+      }
+    }
+  };
+
+  const handleCloseModal = () => {
+    setIsEditModalOpen(false);
+    setCurrentRegistrant(null);
+    fetchRegistrants(); // Refresh list after editing
+  };
+
   const offset = currentPage * itemsPerPage;
   const currentData = filteredData.slice(offset, offset + itemsPerPage);
   const pageCount = Math.ceil(filteredData.length / itemsPerPage);
-  console.log('Current data');
-  console.log(currentData);
+//   console.log('Current data');
+//   console.log(currentData);
 
   return (
     <div className="w-screen p-4 bg-white rounded-lg shadow-md">
@@ -148,6 +175,14 @@ const RegistrantsList = () => {
                     <td className="p-3 border">{registrant.certificateType?.name}</td>
                     <td className="p-3 border">{registrant.sessionDuration?.from + ' - ' + registrant.sessionDuration?.to}</td>
                     <td className="p-3 border">{registrant.status}</td>
+                    <td className="p-3 border text-center">
+                        <button onClick={() => handleEdit(registrant)} className="text-blue-500 mx-2">
+                            <FaEdit />
+                        </button>
+                        <button onClick={() => handleDelete(registrant._id)} className="text-red-500 mx-2">
+                            <FaTrash />
+                        </button>
+                    </td>
                   </tr>
                 ))
               ) : (
@@ -170,6 +205,7 @@ const RegistrantsList = () => {
           activeClassName={"bg-blue-500 text-white px-3 py-1 rounded"}
           pageClassName={"px-3 py-1 border rounded"}
         />
+        {isEditModalOpen && <EditRegistrantForm registrant={currentRegistrant} onClose={handleCloseModal} />}
       </div>
     </div>
   );
