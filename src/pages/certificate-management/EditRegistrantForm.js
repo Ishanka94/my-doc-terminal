@@ -12,6 +12,8 @@ const EditRegistrantForm = ({ registrant, onClose, onUpdate }) => {
     status: ""
   });
 
+  const [certificateTypes, setCertificateTypes] = useState([]);
+
   useEffect(() => {
     if (registrant) {
     console.log(registrant);
@@ -26,6 +28,18 @@ const EditRegistrantForm = ({ registrant, onClose, onUpdate }) => {
       });
     }
   }, [registrant]);
+
+  useEffect(() => {
+    fetch("http://localhost:3000/api/certificate/get-all-certificate-types")
+      .then(response => response.json())
+      .then(data => {
+        console.log(data.data);
+        setCertificateTypes(data?.data?.certificateTypeList);
+        // setSelectedCertificate(data?.data?.certificateTypeList[0]);  // Select first by default
+        // setValue("certificateType", data?.data?.certificateTypeList[0]._id); // Set default in form
+      })
+      .catch(error => console.error("Error fetching certificate types:", error));
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -86,13 +100,26 @@ const EditRegistrantForm = ({ registrant, onClose, onUpdate }) => {
               </option>
             ))}
           </select>
+          <select
+            name="certificateType"
+            value={formData.certificateType}
+            onChange={handleChange}
+            className="w-full p-2 border rounded"
+          >
+            <option value="">Select Certificate Type</option>
+            {certificateTypes.map((type) => (
+              <option key={type.certificateId} value={type._id}>
+                {type.name}
+              </option>
+            ))}
+          </select>
           <div className="flex gap-2 mb-2">
             <input type="text" name="from" value={formData.sessionDuration.from} onChange={handleSessionChange} placeholder="Session From" className="w-1/2 p-2 border rounded" required />
             <input type="text" name="to" value={formData.sessionDuration.to} onChange={handleSessionChange} placeholder="Session To" className="w-1/2 p-2 border rounded" required />
           </div>
           <div className="flex justify-end gap-2">
             <button type="button" onClick={onClose} className="bg-gray-400 text-white px-4 py-2 rounded">Cancel</button>
-            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">Save</button>
+            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">Update</button>
           </div>
         </form>
       </div>
