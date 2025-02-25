@@ -13,6 +13,7 @@ const EditRegistrantForm = ({ registrant, onClose, onUpdate }) => {
   });
 
   const [certificateTypes, setCertificateTypes] = useState([]);
+  const [stations, setStations] = useState([]);
 
   useEffect(() => {
     if (registrant) {
@@ -33,13 +34,28 @@ const EditRegistrantForm = ({ registrant, onClose, onUpdate }) => {
     fetch("http://localhost:3000/api/certificate/get-all-certificate-types")
       .then(response => response.json())
       .then(data => {
-        console.log(data.data);
+        // console.log(data.data);
         setCertificateTypes(data?.data?.certificateTypeList);
         // setSelectedCertificate(data?.data?.certificateTypeList[0]);  // Select first by default
         // setValue("certificateType", data?.data?.certificateTypeList[0]._id); // Set default in form
       })
       .catch(error => console.error("Error fetching certificate types:", error));
   }, []);
+
+  useEffect(() => {
+      fetchStations();
+  }, []);
+
+  const fetchStations = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/api/certificate/get-all-stations");
+      const data = await response.json();
+      setStations(data?.data?.stationList);
+      console.log(data?.data?.stationList);
+    } catch (error) {
+      console.error("Error fetching stations:", error);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -110,6 +126,19 @@ const EditRegistrantForm = ({ registrant, onClose, onUpdate }) => {
             {certificateTypes.map((type) => (
               <option key={type.certificateId} value={type._id}>
                 {type.name}
+              </option>
+            ))}
+          </select>
+          <select
+            name="station"
+            value={formData.station}
+            onChange={handleChange}
+            className="w-full p-2 border rounded"
+          >
+            <option value="">Select Station</option>
+            {stations.map((station) => (
+              <option key={station._id} value={station._id}>
+                {station.name}
               </option>
             ))}
           </select>
