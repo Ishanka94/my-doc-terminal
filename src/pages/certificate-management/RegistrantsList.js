@@ -55,8 +55,6 @@ const RegistrantsList = () => {
 
   const handleFilter = async () => {
     try {
-        // console.log('click filter')
-        // console.log(selectedStation)
       const response = await fetch(
         `http://localhost:3000/api/certificate/filter-registrants?registreeName=${searchTerm}&station=${selectedStation}&certificate=${selectedCertificate}`
       );

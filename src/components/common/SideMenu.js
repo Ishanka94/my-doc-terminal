@@ -82,7 +82,7 @@ function SideMenu() {
                   to="/reports/monthly"
                   className="block rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
                 >
-                  Session stations
+                  Sessions
                 </Link>
                 <Link
                   to="/register-professional"
