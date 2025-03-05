@@ -44,45 +44,49 @@ const SessionList = () => {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
-      {sessions?.map((session) => (
-        <div key={session._id} className="bg-white shadow-md p-4 rounded-lg border">
-          <h3 className="text-lg font-semibold">{session?.station}</h3>
-          <p className="text-sm text-gray-600">
-            <strong>From:</strong> {session?.sessionDuration?.from} <br />
-            <strong>To:</strong> {session?.sessionDuration?.to} <br />
-            <strong>Certificate:</strong> {session.certificateType}
-          </p>
-          <div className="mt-3 flex justify-end gap-2">
-            <button
-              onClick={() => handleEdit(session)}
-              className="bg-blue-500 text-white px-3 py-1 rounded"
-            >
-              Edit
-            </button>
-            <button
-              onClick={() => handleDelete(session.id)}
-              className="bg-red-500 text-white px-3 py-1 rounded"
-            >
-              Delete
-            </button>
-          </div>
-        </div>
-      ))}
-
-      {isEditOpen && selectedSession && (
-        <EditSessionModal
-          session={selectedSession}
-          onClose={() => setIsEditOpen(false)}
-          onUpdate={(updatedSession) => {
-            setSessions(
-              sessions.map((s) => (s.id === updatedSession.id ? updatedSession : s))
-            );
-            setIsEditOpen(false);
-          }}
-        />
-      )}
+    <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 p-6">
+  {sessions?.map((session) => (
+    <div
+      key={session._id}
+      className="bg-white shadow-md p-6 rounded-lg border w-full max-w-md min-w-[300px]"
+    >
+      <h3 className="text-xl font-semibold">{session?.station}</h3>
+      <p className="text-sm text-gray-600">
+        <strong>From:</strong> {session?.sessionDuration?.from} <br />
+        <strong>To:</strong> {session?.sessionDuration?.to} <br />
+        <strong>Certificate:</strong> {session.certificateType}
+      </p>
+      <div className="mt-4 flex justify-end gap-2">
+        <button
+          onClick={() => handleEdit(session)}
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+        >
+          Edit
+        </button>
+        <button
+          onClick={() => handleDelete(session.id)}
+          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
+        >
+          Delete
+        </button>
+      </div>
     </div>
+  ))}
+
+  {isEditOpen && selectedSession && (
+    <EditSessionModal
+      session={selectedSession}
+      onClose={() => setIsEditOpen(false)}
+      onUpdate={(updatedSession) => {
+        setSessions(
+          sessions.map((s) => (s.id === updatedSession.id ? updatedSession : s))
+        );
+        setIsEditOpen(false);
+      }}
+    />
+  )}
+</div>
+
   );
 };
 
