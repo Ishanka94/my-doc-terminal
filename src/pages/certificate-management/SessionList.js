@@ -44,11 +44,13 @@ const SessionList = () => {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 p-6">
-  {sessions?.map((session) => (
+    <div className="flex flex-wrap gap-y-6 p-6">
+  {sessions?.map((session, index) => (
     <div
       key={session._id}
-      className="bg-white shadow-md p-6 rounded-lg border w-full max-w-md min-w-[300px]"
+      className={`bg-white shadow-md p-6 rounded-lg border w-full min-w-[300px] max-w-[400px] flex flex-col justify-between ${
+        (index + 1) % 3 !== 0 ? "mr-6" : "" // Add margin except for the last item in a row
+      }`}
     >
       <h3 className="text-xl font-semibold">{session?.station}</h3>
       <p className="text-sm text-gray-600">
@@ -72,20 +74,9 @@ const SessionList = () => {
       </div>
     </div>
   ))}
-
-  {isEditOpen && selectedSession && (
-    <EditSessionModal
-      session={selectedSession}
-      onClose={() => setIsEditOpen(false)}
-      onUpdate={(updatedSession) => {
-        setSessions(
-          sessions.map((s) => (s.id === updatedSession.id ? updatedSession : s))
-        );
-        setIsEditOpen(false);
-      }}
-    />
-  )}
 </div>
+
+
 
   );
 };
