@@ -79,10 +79,10 @@ function SideMenu() {
                   Session Registrees
                 </Link>
                 <Link
-                  to="/reports/monthly"
+                  to="/training-sessions"
                   className="block rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
                 >
-                  Sessions
+                  Training Sessions
                 </Link>
                 <Link
                   to="/register-professional"

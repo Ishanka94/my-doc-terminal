@@ -16,6 +16,7 @@ import PurchaseDetails from "./pages/PurchaseDetails";
 import DoctorsDetails from "./pages/doctor-management/DoctorsDetails";
 import RegistrantsList from "./pages/certificate-management/RegistrantsList";
 import RegisterSessionForm from "./pages/certificate-management/RegisterSessionForm";
+import SessionList from "./pages/certificate-management/SessionList";
 
 const App = () => {
   const [user, setUser] = useState("");
@@ -77,6 +78,7 @@ const App = () => {
             <Route path="/purchase-details" element={<PurchaseDetails />} />
             <Route path="/doctors-details" element={<DoctorsDetails />} />
             <Route path="/registrants-list" element={<RegistrantsList />} />
+            <Route path="/training-sessions" element={<SessionList />} />
             <Route path="/register-professional" element={<RegisterSessionForm />} />
             <Route path="/sales" element={<Sales />} />
             <Route path="/manage-store" element={<Store />} />
