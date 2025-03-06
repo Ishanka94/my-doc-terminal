@@ -54,9 +54,9 @@ const SessionList = () => {
     >
       <h3 className="text-xl font-semibold">{session?.station}</h3>
       <p className="text-sm text-gray-600">
-        <strong>From:</strong> {session?.sessionDuration?.from} <br />
-        <strong>To:</strong> {session?.sessionDuration?.to} <br />
-        <strong>Certificate:</strong> {session.certificateType}
+        <strong>From:</strong> { session?.sessionDuration?.from } <br />
+        <strong>To:</strong> { session?.sessionDuration?.to } <br />
+        <strong>Certificate:</strong> { session?.certificateType?.name }
       </p>
       <div className="mt-4 flex justify-end gap-2">
         <button

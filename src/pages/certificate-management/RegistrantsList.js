@@ -167,11 +167,11 @@ const RegistrantsList = () => {
                 currentData.map((registrant) => (
                   <tr key={registrant._id} className="text-center">
                     <td className="p-3 border">{registrant.registreeName}</td>
-                    <td className="p-3 border">{registrant.station?.name}</td>
+                    <td className="p-3 border">{registrant?.trainingSession?.station}</td>
                     <td className="p-3 border">{registrant.email}</td>
                     <td className="p-3 border">{registrant.contact}</td>
-                    <td className="p-3 border">{registrant.certificateType?.name}</td>
-                    <td className="p-3 border">{registrant.sessionDuration?.from + ' - ' + registrant.sessionDuration?.to}</td>
+                    <td className="p-3 border">{registrant?.trainingSession?.certificateType?.name}</td>
+                    <td className="p-3 border">{ registrant.trainingSession?.sessionDuration?.from + ' - ' + registrant.trainingSession?.sessionDuration?.to }</td>
                     <td className="p-3 border">{registrant.status}</td>
                     <td className="p-3 border text-center">
                         <button onClick={() => handleEdit(registrant)} className="text-blue-500 mx-2">
