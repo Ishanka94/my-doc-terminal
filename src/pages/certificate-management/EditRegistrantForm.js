@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { STATUS_MAP } from "../../constants/statusConstants";
+import { useSelector } from "react-redux";
+import { hasPermission } from "../../util/permissions";
 
 const EditRegistrantForm = ({ registrant, onClose, onUpdate }) => {
+  const user = useSelector((state) => state.auth.user);
+  // const test = hasPermission(user, "updateRegistreeStatus");
+
   const [formData, setFormData] = useState({
     registreeName: "",
     email: "",
@@ -73,6 +78,7 @@ const EditRegistrantForm = ({ registrant, onClose, onUpdate }) => {
             name="status"
             value={formData.status}
             onChange={handleChange}
+            disabled={!hasPermission(user, "updateRegistreeStatus")}
             className="w-full p-2 border rounded"
           >
             {Object.entries(STATUS_MAP).map(([key, value]) => (
