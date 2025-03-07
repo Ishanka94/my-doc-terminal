@@ -3,59 +3,36 @@ import { STATUS_MAP } from "../../constants/statusConstants";
 
 const EditRegistrantForm = ({ registrant, onClose, onUpdate }) => {
   const [formData, setFormData] = useState({
-    name: "",
+    registreeName: "",
     email: "",
     contact: "",
-    station: "",
-    certificateType: "",
-    sessionDuration: { from: "", to: "" },
     status: ""
   });
 
-  const [certificateTypes, setCertificateTypes] = useState([]);
-  const [stations, setStations] = useState([]);
+  const [trainingSessions, setTrainingSessions] = useState([]);
 
   useEffect(() => {
     if (registrant) {
     console.log(registrant);
       setFormData({
-        name: registrant.registreeName,
+        registreeName: registrant.registreeName,
         email: registrant.email,
         contact: registrant.contact,
-        station: registrant.station?._id || "",
-        certificateType: registrant.certificateType?._id || "",
-        sessionDuration: registrant.sessionDuration || { from: "", to: "" },
-        status: registrant.status
+        status: registrant.status,
+        trainingSession: registrant.trainingSession?._id || ""
       });
     }
   }, [registrant]);
 
   useEffect(() => {
-    fetch("http://localhost:3000/api/certificate/get-all-certificate-types")
+    fetch("http://localhost:3000/api/certificate/get-training-sessions")
       .then(response => response.json())
       .then(data => {
-        // console.log(data.data);
-        setCertificateTypes(data?.data?.certificateTypeList);
-        // setSelectedCertificate(data?.data?.certificateTypeList[0]);  // Select first by default
-        // setValue("certificateType", data?.data?.certificateTypeList[0]._id); // Set default in form
+        setTrainingSessions(data?.data?.trainingSessionList);
+        // setSelectedTrainingSession(data?.data?.trainingSessionList[0]); 
       })
       .catch(error => console.error("Error fetching certificate types:", error));
   }, []);
-
-  useEffect(() => {
-      fetchStations();
-  }, []);
-
-  const fetchStations = async () => {
-    try {
-      const response = await fetch("http://localhost:3000/api/certificate/get-all-stations");
-      const data = await response.json();
-      setStations(data?.data?.stationList);
-      console.log(data?.data?.stationList);
-    } catch (error) {
-      console.error("Error fetching stations:", error);
-    }
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -100,7 +77,7 @@ const EditRegistrantForm = ({ registrant, onClose, onUpdate }) => {
       <div className="bg-white p-6 rounded-lg shadow-md w-96">
         <h2 className="text-lg font-bold mb-4">Edit Registrant</h2>
         <form onSubmit={handleSubmit}>
-          <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Name" className="w-full p-2 mb-2 border rounded" required />
+          <input type="text" name="registreeName" value={formData.registreeName} onChange={handleChange} placeholder="Name" className="w-full p-2 mb-2 border rounded" required />
           <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email" className="w-full p-2 mb-2 border rounded" required />
           <input type="text" name="contact" value={formData.contact} onChange={handleChange} placeholder="Contact" className="w-full p-2 mb-2 border rounded" required />
           {/* <input type="text" name="status" value={formData.status} onChange={handleChange} placeholder="Status" className="w-full p-2 mb-2 border rounded" required /> */}
@@ -117,35 +94,18 @@ const EditRegistrantForm = ({ registrant, onClose, onUpdate }) => {
             ))}
           </select>
           <select
-            name="certificateType"
-            value={formData.certificateType}
+            name="trainingSession"
+            value={formData.trainingSession}
             onChange={handleChange}
             className="w-full p-2 border rounded"
           >
-            <option value="">Select Certificate Type</option>
-            {certificateTypes.map((type) => (
-              <option key={type.certificateId} value={type._id}>
-                {type.name}
+            <option value="">Select Training Session</option>
+            {trainingSessions.map((trainSession) => (
+              <option key={trainSession._id} value={trainSession._id}>
+                {trainSession?.station + "-" + trainSession?.certificateType?.name}
               </option>
             ))}
           </select>
-          <select
-            name="station"
-            value={formData.station}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-          >
-            <option value="">Select Station</option>
-            {stations.map((station) => (
-              <option key={station._id} value={station._id}>
-                {station.name}
-              </option>
-            ))}
-          </select>
-          <div className="flex gap-2 mb-2">
-            <input type="text" name="from" value={formData.sessionDuration.from} onChange={handleSessionChange} placeholder="Session From" className="w-1/2 p-2 border rounded" required />
-            <input type="text" name="to" value={formData.sessionDuration.to} onChange={handleSessionChange} placeholder="Session To" className="w-1/2 p-2 border rounded" required />
-          </div>
           <div className="flex justify-end gap-2">
             <button type="button" onClick={onClose} className="bg-gray-400 text-white px-4 py-2 rounded">Cancel</button>
             <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">Update</button>
