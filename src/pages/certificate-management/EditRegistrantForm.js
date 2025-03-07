@@ -13,7 +13,6 @@ const EditRegistrantForm = ({ registrant, onClose, onUpdate }) => {
 
   useEffect(() => {
     if (registrant) {
-    console.log(registrant);
       setFormData({
         registreeName: registrant.registreeName,
         email: registrant.email,
@@ -39,17 +38,6 @@ const EditRegistrantForm = ({ registrant, onClose, onUpdate }) => {
     setFormData({
       ...formData,
       [name]: value,
-    });
-  };
-
-  const handleSessionChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      sessionDuration: {
-        ...formData.sessionDuration,
-        [name]: value
-      }
     });
   };
 
