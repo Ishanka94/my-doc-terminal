@@ -7,19 +7,16 @@ const RegistrantsList = () => {
   const [registrants, setRegistrants] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [stations, setStations] = useState([]);
-  const [certificateTypes, setCertificateTypes] = useState([]);
-  const [selectedStation, setSelectedStation] = useState("");
-  const [selectedCertificate, setSelectedCertificate] = useState("");
+  const [selectedTrainingSession, setSelectedTrainingSession] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage] = useState(5);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [currentRegistrant, setCurrentRegistrant] = useState(null);
+  const [trainingSessions, setTrainingSessions] = useState([]);
 
   useEffect(() => {
     fetchRegistrants();
-    fetchStations();
-    fetchCertificateTypes();
+    fetchTrainingSessions();
   }, []);
 
   const fetchRegistrants = async () => {
@@ -33,30 +30,20 @@ const RegistrantsList = () => {
     }
   };
 
-  const fetchStations = async () => {
+  const fetchTrainingSessions = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/certificate/get-all-stations");
+      const response = await fetch("http://localhost:3000/api/certificate/get-training-sessions");
       const data = await response.json();
-      setStations(data?.data?.stationList);
+      setTrainingSessions(data?.data?.trainingSessionList);
     } catch (error) {
-      console.error("Error fetching stations:", error);
-    }
-  };
-
-  const fetchCertificateTypes = async () => {
-    try {
-      const response = await fetch("http://localhost:3000/api/certificate/get-all-certificate-types");
-      const data = await response.json();
-      setCertificateTypes(data?.data?.certificateTypeList);
-    } catch (error) {
-      console.error("Error fetching certificate types:", error);
+      console.error("Error fetching training sessions:", error);
     }
   };
 
   const handleFilter = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/certificate/filter-registrants?registreeName=${searchTerm}&station=${selectedStation}&certificate=${selectedCertificate}`
+        `http://localhost:3000/api/certificate/filter-registrants?registreeName=${searchTerm}&trainingSession=${selectedTrainingSession}`
       );
       const data = await response.json();
       setFilteredData(data?.data?.registrees);
@@ -68,8 +55,7 @@ const RegistrantsList = () => {
 
   const handleReset = () => {
     setSearchTerm("");
-    setSelectedStation("");
-    setSelectedCertificate("");
+    setSelectedTrainingSession("");
     setFilteredData(registrants);
     setCurrentPage(0);
   };
@@ -105,8 +91,6 @@ const RegistrantsList = () => {
   const offset = currentPage * itemsPerPage;
   const currentData = filteredData.slice(offset, offset + itemsPerPage);
   const pageCount = Math.ceil(filteredData.length / itemsPerPage);
-//   console.log('Current data');
-//   console.log(currentData);
 
   return (
     <div className="w-screen p-4 bg-white rounded-lg shadow-md">
@@ -122,23 +106,13 @@ const RegistrantsList = () => {
             className="px-3 py-2 border rounded-md flex-grow sm:w-64"
           />
           <select
-            value={selectedStation}
-            onChange={(e) => setSelectedStation(e.target.value)}
+            value={selectedTrainingSession}
+            onChange={(e) => setSelectedTrainingSession(e.target.value)}
             className="px-3 py-2 border rounded-md"
           >
-            <option value="*">All Stations</option>
-            {stations.map((station) => (
-              <option key={station._id} value={station._id}>{station.name}</option>
-            ))}
-          </select>
-          <select
-            value={selectedCertificate}
-            onChange={(e) => setSelectedCertificate(e.target.value)}
-            className="px-3 py-2 border rounded-md"
-          >
-            <option value="*">All Certificates</option>
-            {certificateTypes.map((cert) => (
-              <option key={cert._id} value={cert._id}>{cert.name}</option>
+            <option value="*">All training sessions</option>
+            {trainingSessions.map((trainingSession) => (
+              <option key={trainingSession._id} value={trainingSession._id}>{trainingSession.station + "-" + trainingSession.certificateType + "-" + trainingSession.sessionDuration }</option>
             ))}
           </select>
           <button onClick={handleFilter} className="bg-blue-500 text-white px-4 py-2 rounded-md">
