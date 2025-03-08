@@ -13,6 +13,7 @@ import DoctorsDetails from "./pages/doctor-management/DoctorsDetails";
 import RegistrantsList from "./pages/certificate-management/RegistrantsList";
 import RegisterSessionForm from "./pages/certificate-management/RegisterSessionForm";
 import SessionList from "./pages/certificate-management/SessionList";
+import ViewRegistrants from "./pages/certificate-management/ViewRegistrants";
 
 const App = () => {
   const [user, setUser] = useState("");
@@ -74,6 +75,7 @@ const App = () => {
             <Route path="/registrants-list" element={<RegistrantsList />} />
             <Route path="/training-sessions" element={<SessionList />} />
             <Route path="/register-professional" element={<RegisterSessionForm />} />
+            <Route path="/view-registrants/:trainingSessionId" element={<ViewRegistrants />} />
           </Route>
           <Route path="*" element={<NoPageFound />} />
         </Routes>

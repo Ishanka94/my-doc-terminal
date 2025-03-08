@@ -1,8 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Dialog } from "@headlessui/react";
 import EditSessionModal from "./EditSessionModal";
+import { useNavigate } from "react-router-dom";
 
 const SessionList = () => {
+  const navigate = useNavigate();
+
+  const handleCardClick = (session) => {
+    navigate(`/view-registrants/${session._id}`, 
+        { state: { station: session?.station, 
+            certificateType: session?.certificateType?.name, 
+            duration: session?.sessionDuration?.from } 
+    });
+  };
   const [sessions, setSessions] = useState([]);
   const [selectedSession, setSelectedSession] = useState(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -48,6 +58,7 @@ const SessionList = () => {
   {sessions?.map((session, index) => (
     <div
       key={session._id}
+      onClick={() => handleCardClick(session)}
       className={`bg-white shadow-md p-6 rounded-lg border w-full min-w-[300px] max-w-[400px] flex flex-col justify-between ${
         (index + 1) % 3 !== 0 ? "mr-6" : "" // Add margin except for the last item in a row
       }`}
