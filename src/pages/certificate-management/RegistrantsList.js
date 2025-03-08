@@ -21,7 +21,7 @@ const RegistrantsList = () => {
 
   const fetchRegistrants = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/certificate/filter-registrants");
+      const response = await fetch(`${window.Configs.backendUrl}/certificate/filter-registrants`);
       const data = await response.json();
       setRegistrants(data?.data?.registrees);
       setFilteredData(data?.data?.registrees);
@@ -32,7 +32,7 @@ const RegistrantsList = () => {
 
   const fetchTrainingSessions = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/certificate/get-training-sessions");
+      const response = await fetch(`${window.Configs.backendUrl}/certificate/get-training-sessions`);
       const data = await response.json();
       setTrainingSessions(data?.data?.trainingSessionList);
     } catch (error) {
@@ -43,7 +43,7 @@ const RegistrantsList = () => {
   const handleFilter = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/certificate/filter-registrants?registreeName=${searchTerm}&trainingSession=${selectedTrainingSession}`
+        `${window.Configs.backendUrl}/certificate/filter-registrants?registreeName=${searchTerm}&trainingSession=${selectedTrainingSession}`
       );
       const data = await response.json();
       setFilteredData(data?.data?.registrees);
@@ -72,7 +72,7 @@ const RegistrantsList = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this registrant?")) {
       try {
-        await fetch(`http://localhost:3000/api/certificate/delete-registrant/${id}`, {
+        await fetch(`${window.Configs.backendUrl}/certificate/delete-registrant/${id}`, {
           method: "DELETE",
         });
         fetchRegistrants(); // Refresh list after deletion

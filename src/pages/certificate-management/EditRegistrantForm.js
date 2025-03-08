@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { STATUS_MAP } from "../../constants/statusConstants";
 import { useSelector } from "react-redux";
 import { hasPermission } from "../../util/permissions";
+import { sendEditRegistrantRequest, getTrainingSessionList } from '../../api/backendApi';
 
 const EditRegistrantForm = ({ registrant, onClose, onUpdate }) => {
   const user = useSelector((state) => state.auth.user);
@@ -29,11 +30,10 @@ const EditRegistrantForm = ({ registrant, onClose, onUpdate }) => {
   }, [registrant]);
 
   useEffect(() => {
-    fetch("http://localhost:3000/api/certificate/get-training-sessions")
+    fetch(`${window.Configs.backendUrl}/certificate/get-training-sessions`)
       .then(response => response.json())
       .then(data => {
         setTrainingSessions(data?.data?.trainingSessionList);
-        // setSelectedTrainingSession(data?.data?.trainingSessionList[0]); 
       })
       .catch(error => console.error("Error fetching certificate types:", error));
   }, []);
@@ -49,11 +49,7 @@ const EditRegistrantForm = ({ registrant, onClose, onUpdate }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`http://localhost:3000/api/certificate/update-registrant/${registrant._id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      const response = await sendEditRegistrantRequest(formData, registrant._id);
       if (response.ok) {
         onUpdate(); // Refresh registrants list after update
         onClose();

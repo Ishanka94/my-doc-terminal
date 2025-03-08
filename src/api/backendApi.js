@@ -19,3 +19,27 @@ export const fetchUserById = async (userRef) => {
   const response = await fetch(`${window.Configs.backendUrl}/auth/get-user-by-id?id=${userRef}`);
   return response.json();
 };
+
+export const sendEditRegistrantRequest = async (body, registrantId) => {
+  const response = await fetch(`${window.Configs.backendUrl}/certificate/update-registrant/${registrantId}`, {
+    method: 'PUT',
+    body: JSON.stringify(body),
+    headers: {
+       'Content-type': 'application/json',
+    }
+  });
+  return response.json();
+}
+
+export const registerTrainee = async (body) => {
+  const response = await fetch(`${window.Configs.backendUrl}/certificate/register-trainee`, {
+    method: 'POST',
+    body: JSON.stringify(body),
+    headers: {
+       'Content-type': 'application/json',
+    }
+  });
+  return response.json();
+}
+
+

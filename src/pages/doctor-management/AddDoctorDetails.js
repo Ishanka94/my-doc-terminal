@@ -40,7 +40,7 @@ export default function AddDoctorDetails({
 
   // POST Data
   const registerDoctor = () => {
-    fetch("http://localhost:5001/api/auth/register", {
+    fetch(`${window.Configs.backendUrl}/api/auth/register`, {
       method: "POST",
       headers: {
         "Content-type": "application/json",

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Listbox } from "@headlessui/react";
 import { useForm } from "react-hook-form";
+import { registerTrainee } from '../../api/backendApi';
 
 const RegisterSessionForm = () => {
   const [trainingSessions, setTrainingSessions] = useState([]);  // Dropdown data
@@ -9,7 +10,7 @@ const RegisterSessionForm = () => {
 
   // Fetch station data from backend
   useEffect(() => {
-    fetch("http://localhost:3000/api/certificate/get-training-sessions")
+    fetch(`${window.Configs.backendUrl}/certificate/get-training-sessions`)
       .then(response => response.json())
       .then(data => {
         setTrainingSessions(data?.data?.trainingSessionList);
@@ -21,18 +22,9 @@ const RegisterSessionForm = () => {
 
   // Handle form submission
   const onSubmit = async (data) => {
-    console.log(data);
     try {
-      const response = await fetch("http://localhost:3000/api/certificate/register-trainee", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-      });
-
-      if (!response.ok) throw new Error("Failed to register session");
-
-      const result = await response.json();
-      console.log("Session registered:", result);
+      const response = await registerTrainee(data);
+      console.log(response);
     } catch (error) {
       console.error("Error registering session:", error);
     }

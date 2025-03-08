@@ -13,7 +13,7 @@ const SessionList = () => {
 
   const fetchSessions = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/certificate/get-training-sessions");
+      const response = await fetch(`${window.Configs.backendUrl}/certificate/get-training-sessions`);
       const data = await response.json();
       console.log(data.data.trainingSessionList);
       setSessions(data?.data?.trainingSessionList);
@@ -29,7 +29,7 @@ const SessionList = () => {
 
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/sessions/${id}`, {
+      const response = await fetch(`${window.Configs.backendUrl}/sessions/${id}`, {
         method: "DELETE",
       });
 

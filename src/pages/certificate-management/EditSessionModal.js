@@ -16,7 +16,7 @@ const EditSessionModal = ({ session, onClose, onUpdate }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`http://localhost:3000/api/sessions/${session.id}`, {
+      const response = await fetch(`${window.Configs.backendUrl}/sessions/${session.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
