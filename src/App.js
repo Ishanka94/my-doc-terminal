@@ -5,14 +5,10 @@ import Dashboard from "./pages/dashboard/Dashboard";
 import "./index.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/common/Layout";
-import Inventory from "./pages/Inventory";
 import NoPageFound from "./pages/NoPageFound";
 import AuthContext from "./contexts/AuthContext";
 import ProtectedWrapper from "./route-guards/ProtectedWrapper";
 import { useEffect, useState } from "react";
-import Store from "./pages/Store";
-import Sales from "./pages/Sales";
-import PurchaseDetails from "./pages/PurchaseDetails";
 import DoctorsDetails from "./pages/doctor-management/DoctorsDetails";
 import RegistrantsList from "./pages/certificate-management/RegistrantsList";
 import RegisterSessionForm from "./pages/certificate-management/RegisterSessionForm";
@@ -74,14 +70,10 @@ const App = () => {
             }
           >
             <Route index element={<Dashboard />} />
-            <Route path="/inventory" element={<Inventory />} />
-            <Route path="/purchase-details" element={<PurchaseDetails />} />
             <Route path="/doctors-details" element={<DoctorsDetails />} />
             <Route path="/registrants-list" element={<RegistrantsList />} />
             <Route path="/training-sessions" element={<SessionList />} />
             <Route path="/register-professional" element={<RegisterSessionForm />} />
-            <Route path="/sales" element={<Sales />} />
-            <Route path="/manage-store" element={<Store />} />
           </Route>
           <Route path="*" element={<NoPageFound />} />
         </Routes>
